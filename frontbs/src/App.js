@@ -2,10 +2,10 @@ import './App.scss';
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
-  Link
+  Route
 } from "react-router-dom";
 import Header from './components/header/header';
+import Footer from './components/footer/footer';
 
 function App() {
   return (
@@ -13,25 +13,18 @@ function App() {
       <div className="App">
         <Header/>
 
-        <nav>
-          <ul>
-          <li>
-              <Link to="/">home</Link>
-            </li>
-            <li>
-              <Link to="/tabela">tabela</Link>
-            </li>
-          </ul>
-        </nav>
-
+        <Footer/>
       </div>
 
       <Switch>
-        <Route path="/tabela">
-          <TabelaFoda />
+        <Route path="/gerenciaLivro">
+          <Livros />
         </Route>
         <Route path="/">
-          <Home />
+          <Dash />
+        </Route>
+        <Route path="/gerenciaEmprestimo">
+          <Emprestimos />
         </Route>
       </Switch>
 
@@ -39,12 +32,16 @@ function App() {
   );
 }
 
-function TabelaFoda() {
-  return <h1>Tabela Foda</h1>;
+function Livros() {
+  return <h1>Tabela de Livros</h1>;
 }
 
-function Home() {
-  return <h1>Home</h1>;
+function Dash() {
+  return <h1>DashBoard</h1>;
+}
+
+function Emprestimos() {
+  return <h1>Tabela de Emprestimos</h1>;
 }
 
 export default App;

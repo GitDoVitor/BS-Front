@@ -7,6 +7,9 @@ import { Link } from 'react-router-dom';
 import ICONE from '../../images/Group 1.png'
 
 const useStyles = makeStyles((theme) => ({
+  link: {
+    textDecoration: "none",
+  },
   icon: {
     marginTop: 10,
   },
@@ -15,8 +18,8 @@ const useStyles = makeStyles((theme) => ({
   },
   botao: {
     color: "#FFFFFF",
-    fontSize: 18,
-    marginLeft: 50,
+    fontSize: 16,
+    // marginLeft: 50,
   },
 }))
 
@@ -27,18 +30,20 @@ export default function Header() {
     <div>
       <AppBar position="static" className={classes.header}>
         <Toolbar>
-          <Link to="/">
+          <Link to="/" className={classes.link}>
             <img src={ICONE} className={classes.icon} alt="logo"/>
           </Link>
-          
-            <Button className={classes.botao} style={{ marginLeft: 200 }}>DASHBOARD</Button>
+          <Link to="/gerenciaLivro" className={classes.link}>
             <Button className={classes.botao}>GERENCIAR LIVROS</Button>
+          </Link>
+          <Link to="/gerenciaEmprestimo" className={classes.link}>
             <Button className={classes.botao}>GERENCIAR EMPRÉSTIMOS</Button>
+          </Link>
+          <Link className={classes.link}>
             <Button className={classes.botao}>ADICIONAR LIVRO</Button>
-          
+          </Link>
         </Toolbar>
       </AppBar>
     </div>
   )
-
 }
