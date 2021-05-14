@@ -1,25 +1,50 @@
-import logo from './logo.svg';
-import './App.css';
+import './App.scss';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
+import Header from './components/header/header';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+        <Header/>
+
+        <nav>
+          <ul>
+          <li>
+              <Link to="/">home</Link>
+            </li>
+            <li>
+              <Link to="/tabela">tabela</Link>
+            </li>
+          </ul>
+        </nav>
+
+      </div>
+
+      <Switch>
+        <Route path="/tabela">
+          <TabelaFoda />
+        </Route>
+        <Route path="/">
+          <Home />
+        </Route>
+      </Switch>
+
+    </Router>
   );
+}
+
+function TabelaFoda() {
+  return <h1>Tabela Foda</h1>;
+}
+
+function Home() {
+  return <h1>Home</h1>;
 }
 
 export default App;
