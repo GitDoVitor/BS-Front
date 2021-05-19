@@ -1,0 +1,69 @@
+#container-formulario {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    height: 100%;
+    margin-top: 50px;
+    
+    form {
+        margin: center;
+        width: 55%;
+        display: flex;
+        flex-flow: row wrap;
+
+        input, textarea {
+            background-color: #F3F3F3;
+            border: 1px solid #C1C1C1;
+            padding: 8px;
+            margin-right: 7px;
+            margin-bottom: 7px;
+        }
+
+        
+        .dois-por-linha {
+            width: 46.9%;
+        }
+
+        .tres-por-linha {
+            width: 30.5%;
+        }
+
+        textarea {
+            width: 96.20%;
+        }
+        
+        .botao-confirmar {
+            background-color: #2C60AD;
+            color: white;
+            font-size: 12px;
+            font-weight: 140;
+            padding: 8px 11px 8px 11px;
+            border-radius: 5px;
+        }
+        .botao-confirmar:hover {
+            cursor: pointer;
+        }
+
+        @media screen and (max-width: 1632px){
+            .tres-por-linha {
+                width: 47%;
+            }
+            .input-data {
+                width: 96.90%;
+            }
+            textarea {
+                width: 96.90%;
+            }
+        }
+
+        @media screen and (max-width: 1514px){
+            .tres-por-linha {
+                width: 100%;
+            }
+            .dois-por-linha {
+                width: 100%;
+            }
+    
+        }
+    }
+}
