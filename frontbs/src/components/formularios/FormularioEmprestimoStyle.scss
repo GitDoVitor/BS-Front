@@ -1,4 +1,4 @@
-#container-formulario {
+#container-formulario-emprestimo {
     display: flex;
     justify-content: center;
     align-content: center;
@@ -27,7 +27,7 @@
         }
 
         .tres-por-linha {
-            width: 29.93%;
+            width: 24.2%;
             padding: 11px;
         }
 
@@ -50,11 +50,29 @@
             color: white;
             font-size: 12px;
             font-weight: 140;
-            padding: 8px 11px 8px 11px;
+            padding: 12px 30px 12px 30px;
             border-radius: 5px;
         }
+
+        .botao-pesquisar-livro {
+            background-color: white;
+            color: #2C60AD;
+            font-size: 12px;
+            font-weight: bold;
+            height: 40px;
+            padding: 0px 30px 0px 30px;
+            border-radius: 5px;
+            border: 2px solid #2C60AD;
+        }
+
+        .botao-pesquisar-livro:hover {
+            cursor: pointer;
+            background-color: #e4e4e4;
+        }
+
         .botao-confirmar:hover {
             cursor: pointer;
+            background-color: #17325c;
         }
 
         @media screen and (max-width: 1632px){

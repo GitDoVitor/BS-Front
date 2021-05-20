@@ -14,6 +14,7 @@ import Emprestimos from './components/emprestimo/emprestimo';
 import DashBoard from './components/dashboard/dashBoard';
 import Tabela from './components/tabelas/TabelaEmprestimosIndex';
 import Formulario from './components/formularios/FormularioIndex';
+import FormularioEmprestimo from './components/formularios/FormularioEmprestimo';
 
 export default class App extends Component {
   componentDidMount() {
@@ -45,6 +46,9 @@ export default class App extends Component {
           </Route>
           <Route path="/formulario">
             <Formulario />
+          </Route>
+          <Route path="/formularioEmprestimo">
+            <FormularioEmprestimo />
           </Route>
         </Switch>
       </Router>
