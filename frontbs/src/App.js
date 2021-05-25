@@ -15,6 +15,7 @@ import DashBoard from './components/dashboard/dashBoard';
 import Tabela from './components/tabelas/TabelaEmprestimosIndex';
 import Formulario from './components/formularios/FormularioIndex';
 import FormularioEmprestimo from './components/formularios/FormularioEmprestimo';
+import NTF from './components/notFound/pageNotFound';
 
 export default class App extends Component {
   componentDidMount() {
@@ -50,6 +51,8 @@ export default class App extends Component {
           <Route path="/formularioEmprestimo">
             <FormularioEmprestimo />
           </Route>
+
+          <Route component={NTF} />
         </Switch>
       </Router>
     );
