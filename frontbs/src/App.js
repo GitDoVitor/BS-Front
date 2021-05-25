@@ -10,6 +10,9 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import Emprestimos from './components/emprestimo/emprestimo';
 import DashBoard from './components/dashboard/dashBoard';
+import Tabela from './components/tabelas/TabelaEmprestimosIndex';
+import Formulario from './components/formularios/FormularioIndex';
+import FormularioEmprestimo from './components/formularios/FormularioEmprestimo';
 import NTF from './components/notFound/pageNotFound';
 
 export default class App extends Component {
@@ -37,6 +40,16 @@ export default class App extends Component {
           <Route path="/gerenciaEmprestimo">
             <Emprestimos />
           </Route>
+          <Route path="/tabelaLivros">
+            <Tabela />
+          </Route>
+          <Route path="/formulario">
+            <Formulario />
+          </Route>
+          <Route path="/formularioEmprestimo">
+            <FormularioEmprestimo />
+          </Route>
+
           <Route component={NTF} />
         </Switch>
       </Router>
