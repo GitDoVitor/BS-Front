@@ -32,7 +32,7 @@ export default function Header() {
   return(
     <div>
       <AppBar position="static" className={classes.header}>
-        <Toolbar>
+        <Toolbar justify="space-around">
           <Link to="/" className={classes.link}>
             <img src={ICONE} className={classes.icon} alt="logo"/>
           </Link>
