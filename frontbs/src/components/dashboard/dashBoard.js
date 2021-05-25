@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
   tableContainer: {
     marginLeft: "auto",
     marginRight: "auto",
-    width: 1100,
+    width: 1000,
     marginTop: 25,
   },
   titulo: {
