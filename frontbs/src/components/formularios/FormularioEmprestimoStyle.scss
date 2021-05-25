@@ -1,0 +1,187 @@
+#container-formulario-emprestimo {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    height: 100%;
+    margin-top: 50px;
+    
+    form {
+        margin: center;
+        width: 55%;
+        display: flex;
+        flex-flow: row wrap;
+        
+        input, textarea {
+            background-color: #F3F3F3;
+            border: 1px solid #C1C1C1;
+            padding: 8px;
+            margin-right: 7px;
+            margin-bottom: 8px;
+        }
+
+        
+        .dois-por-linha {
+            width: 46.34%;
+            padding: 11px;
+        }
+
+        .tres-por-linha {
+            width: 24.2%;
+            padding: 11px;
+        }
+
+        textarea {
+            width: 96.20%;
+            font-family: sans-serif;
+        }
+
+        .input-data {
+            font-family: sans-serif;
+        }
+
+        input[type="date"]:focus {
+            padding: 8px 11px;
+            color: #757575;
+        }
+        
+        .botao-confirmar {
+            background-color: #2C60AD;
+            color: white;
+            font-size: 12px;
+            font-weight: 140;
+            padding: 12px 30px 12px 30px;
+            border-radius: 5px;
+        }
+
+        .botao-pesquisar-livro {
+            background-color: white;
+            color: #2C60AD;
+            font-size: 12px;
+            font-weight: bold;
+            height: 40px;
+            padding: 0px 30px;
+            border-radius: 5px;
+            border: 2px solid #2C60AD;
+        }
+
+        .botao-pesquisar-livro:hover {
+            cursor: pointer;
+            background-color: #e4e4e4;
+        }
+
+        .botao-confirmar:hover {
+            cursor: pointer;
+            background-color: #17325c;
+        }
+
+        @media screen and (max-width: 1632px){
+            .tres-por-linha {
+                width: 47%;
+            }
+            .input-data {
+                width: 96.90%;
+            }
+            textarea {
+                width: 96.90%;
+            }
+        }
+
+        @media screen and (max-width: 1514px){
+            .tres-por-linha {
+                width: 100%;
+            }
+            .dois-por-linha {
+                width: 100%;
+            }
+    
+        }
+
+        .modal-verificar {
+            padding: 0px 20px;
+
+            h2 {
+                color: #143362;
+                font-weight: 590;
+                font-family: 'Tauri', sans-serif;
+            }
+
+            form {
+                margin: center;
+                width: 100%;
+                display: flex;
+                flex-flow: row wrap;
+               
+                input, textarea {
+                    background-color: #F3F3F3;
+                    border: 1px solid #C1C1C1;
+                    padding: 11px;
+                    margin-right: 0px;
+                    margin-bottom: 8px;   
+                }
+
+                .um-por-linha {
+                    width: 100%;
+                }
+
+                .dois-por-linha-modal {
+                    width: 44.84%;
+                }
+
+                .date-esquerda {
+                    margin-right: 7px;
+                }
+
+            }
+            
+            #container-tabela-modal { 
+                display: flex;
+                justify-content: center;
+                align-content: center;
+                height: 100%;
+                margin-top: 5px;
+            
+                .tabela {
+                    margin: center;
+                    width: 100%;
+                    box-shadow: 4px 4px 4px #0000003f;
+                    border-spacing: 0;
+                    border-collapse: collapse;
+                    
+                    th {
+                        background-color: #143362;
+                        color: white;
+                        border: none;
+                        padding: 10px;
+                        font-size: 15px;
+                        font-weight: 550;
+                    }
+                    
+                    td {
+                        background-color: #F5F5F5;
+                        color: #2D2D2D;
+                        text-align: center;
+                        border-bottom: 1px solid #D1D1D1;
+                        padding: 13px;
+                        font-weight: 460;
+                    }
+                }
+            }
+
+            .botao-confirmar-modal {
+                background-color: #2C60AD;
+                color: white;
+                font-size: 12px;
+                font-weight: 140;
+                padding: 12px 30px 12px 30px;
+                border-radius: 5px;
+                float: right;
+                margin: 15px 0px;
+            }
+
+            .botao-confirmar-modal:hover {
+                cursor: pointer;
+                background-color: #17325c;
+            }
+        }
+    }
+}
