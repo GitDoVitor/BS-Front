@@ -1,10 +1,15 @@
-import React from 'react'
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import { makeStyles } from '@material-ui/core/styles';
-import { Button, ButtonGroup } from '@material-ui/core';
-import { Link } from 'react-router-dom';
-import ICONE from '../../images/Group 1.png'
+import React from "react";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import { makeStyles } from "@material-ui/core/styles";
+import { Button, Grid, Menu, MenuItem, Typography } from "@material-ui/core";
+import { Link } from "react-router-dom";
+import ICONE from "../../images/Group 1.png";
+import LivroIcon from "@material-ui/icons/Class";
+import EditoraIcon from "@material-ui/icons/Apartment";
+import AutorIcon from "@material-ui/icons/Person";
+import EmprestimoIcon from "@material-ui/icons/Ballot";
+import GeneroIcon from "@material-ui/icons/CardMembership";
 
 const useStyles = makeStyles((theme) => ({
   link: {
@@ -20,35 +25,139 @@ const useStyles = makeStyles((theme) => ({
     color: "#FFFFFF",
     fontSize: 16,
   },
-  buttonGroup: {
-    marginLeft: "auto",
-    marginRight: 150
+  itemDrop: {
+    color: "black",
+    fontSize: 11,
   },
-}))
+}));
 
 export default function Header() {
   const classes = useStyles();
 
-  return(
+  const [anchorEmpres, setAnchorEmpres] = React.useState(null);
+  const [anchorNovo, setAnchorNovo] = React.useState(null);
+
+  const handleClickEmpres = (event) => {
+    setAnchorEmpres(event.currentTarget);
+  };
+
+  const handleClickNovo = (event) => {
+    setAnchorNovo(event.currentTarget);
+  };
+
+  const handleCloseMenu = () => {
+    setAnchorEmpres(null);
+    setAnchorNovo(null);
+  };
+
+  return (
     <div>
+      {/* ----------------- Header ----------------- */}
+
       <AppBar position="static" className={classes.header}>
-        <Toolbar justify="space-around">
+        <Toolbar>
           <Link to="/" className={classes.link}>
-            <img src={ICONE} className={classes.icon} alt="logo"/>
+            <img src={ICONE} className={classes.icon} alt="logo" />
           </Link>
-          <ButtonGroup className={classes.buttonGroup}>
+          <Grid
+            container
+            direction="row"
+            justify="space-evenly"
+            alignItems="center"
+          >
             <Link to="/gerenciaLivro" className={classes.link}>
-              <Button className={classes.botao}>GERENCIAR LIVROS</Button>
+              <Button className={classes.botao}>LIVROS</Button>
             </Link>
-            <Link to="/gerenciaEmprestimo" className={classes.link}>
-              <Button className={classes.botao}>GERENCIAR EMPRÉSTIMOS</Button>
-            </Link>
-            <Link className={classes.link}>
-              <Button className={classes.botao}>ADICIONAR LIVRO</Button>
-            </Link>
-          </ButtonGroup>
+            <Button className={classes.botao} onClick={handleClickEmpres}>
+              EMPRÉSTIMOS
+            </Button>
+            <Button className={classes.botao} onClick={handleClickNovo}>
+              ADICIONAR NOVO
+            </Button>
+          </Grid>
         </Toolbar>
       </AppBar>
+
+      {/* ----------------- Menu Empréstimo ----------------- */}
+
+      <Menu
+        id="simple-menu"
+        anchorEl={anchorEmpres}
+        keepMounted
+        open={Boolean(anchorEmpres)}
+        onClose={handleCloseMenu}
+      >
+        <MenuItem onHover={handleCloseMenu}>
+          <Link className={classes.link} to="/andamento">
+            <Typography className={classes.itemDrop}>Em Andamento</Typography>
+          </Link>
+        </MenuItem>
+        <MenuItem onClick={handleCloseMenu}>
+          <Link className={classes.link} to="/reservados">
+            <Typography className={classes.itemDrop}>Reservados</Typography>
+          </Link>
+        </MenuItem>
+        <MenuItem onClick={handleCloseMenu}>
+          <Link className={classes.link} to="/Realizados">
+            <Typography className={classes.itemDrop}>Realizados</Typography>
+          </Link>
+        </MenuItem>
+        <MenuItem onClick={handleCloseMenu}>
+          <Link className={classes.link} to="/cancelados">
+            <Typography className={classes.itemDrop}>Cancelados</Typography>
+          </Link>
+        </MenuItem>
+      </Menu>
+
+      {/* ----------------- Menu Adicionar Novo ----------------- */}
+
+      <Menu
+        anchorEl={anchorNovo}
+        keepMounted
+        open={Boolean(anchorNovo)}
+        onClose={handleCloseMenu}
+      >
+        <MenuItem onHover={handleCloseMenu}>
+          <Link className={classes.link} to="/andamento">
+            <Typography className={classes.itemDrop}>
+              <AutorIcon />
+              Autor
+            </Typography>
+          </Link>
+        </MenuItem>
+        <MenuItem onClick={handleCloseMenu}>
+          <Link className={classes.link} to="/formulario">
+            <Typography className={classes.itemDrop}>
+              <LivroIcon />
+              Livro
+            </Typography>
+          </Link>
+        </MenuItem>
+        <MenuItem onClick={handleCloseMenu}>
+          <Link className={classes.link} to="/formularioEmprestimo">
+            <Typography className={classes.itemDrop}>
+              <EmprestimoIcon />
+              Emprestimo
+            </Typography>
+          </Link>
+        </MenuItem>
+        <MenuItem onClick={handleCloseMenu}>
+          <Link className={classes.link} to="/cancelados">
+            <Typography className={classes.itemDrop}>
+              <EditoraIcon />
+              Editora
+            </Typography>
+          </Link>
+        </MenuItem>
+        <MenuItem onClick={handleCloseMenu}>
+          <Link className={classes.link} to="/cancelados">
+            <Typography className={classes.itemDrop}>
+              <GeneroIcon />
+              Gênero
+            </Typography>
+          </Link>
+        </MenuItem>
+      </Menu>
     </div>
-  )
+  );
 }
