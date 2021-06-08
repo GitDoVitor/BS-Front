@@ -8,7 +8,6 @@ import Footer from './components/footer/footer';
 import React, { Component } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import Emprestimos from './components/emprestimo/emprestimo';
 import DashBoard from './components/dashboard/dashBoard';
 import Tabela from './components/tabelas/TabelaEmprestimosIndex';
 import Formulario from './components/formularios/FormularioIndex';
@@ -37,8 +36,17 @@ export default class App extends Component {
           <Route exact path="/">
             <DashBoard />
           </Route>
-          <Route path="/gerenciaEmprestimo">
-            <Emprestimos />
+          <Route path="/reservados">
+            <Reservados />
+          </Route>
+          <Route path="/andamento">
+            <Andamento />
+          </Route>
+          <Route path="/cancelados">
+            <Cancelados />
+          </Route>
+          <Route path="/realizados">
+            <Realizados />
           </Route>
           <Route path="/tabelaLivros">
             <Tabela />
@@ -59,4 +67,20 @@ export default class App extends Component {
 
 function Livros() {
   return <h1>Tabela de Livros</h1>;
+}
+
+function Andamento() {
+  return <h1>Tabela de Emprestimos em Andamento</h1>;
+}
+
+function Cancelados() {
+  return <h1>Tabela de Emprestimos Cancelados</h1>;
+}
+
+function Reservados() {
+  return <h1>Tabela de Emprestimos Reservados</h1>;
+}
+
+function Realizados() {
+  return <h1>Tabela de Emprestimos Realizados</h1>;
 }
