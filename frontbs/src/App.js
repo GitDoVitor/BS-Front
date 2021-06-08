@@ -1,32 +1,29 @@
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route
-} from "react-router-dom";
-import Header from './components/header/header';
-import Footer from './components/footer/footer';
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Header from "./components/header/header";
+import Footer from "./components/footer/footer";
 import React, { Component } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import DashBoard from './components/dashboard/dashBoard';
-import Tabela from './components/tabelas/TabelaEmprestimosIndex';
-import Formulario from './components/formularios/FormularioIndex';
-import FormularioEmprestimo from './components/formularios/FormularioEmprestimo';
-import NTF from './components/notFound/pageNotFound';
+import DashBoard from "./components/dashboard/dashBoard";
+import Tabela from "./components/tabelas/TabelaEmprestimosIndex";
+import Formulario from "./components/formularios/FormularioIndex";
+import FormularioEmprestimo from "./components/formularios/FormularioEmprestimo";
+import Reservados from "./components/emprestimo/emprestimoReservado";
+import NTF from "./components/notFound/pageNotFound";
 
 export default class App extends Component {
   componentDidMount() {
     AOS.init({
-      duration: 2000
+      duration: 2000,
     });
   }
-  render(){
+  render() {
     return (
       <Router>
         <div className="App">
-          <Header/>
+          <Header />
 
-          <Footer/>
+          <Footer />
         </div>
 
         <Switch>
@@ -75,10 +72,6 @@ function Andamento() {
 
 function Cancelados() {
   return <h1>Tabela de Emprestimos Cancelados</h1>;
-}
-
-function Reservados() {
-  return <h1>Tabela de Emprestimos Reservados</h1>;
 }
 
 function Realizados() {

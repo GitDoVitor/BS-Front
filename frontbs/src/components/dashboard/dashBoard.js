@@ -30,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
   },
   titulo: {
     color: "#143362",
+    fontFamily: "Tauri, sans-serif",
   },
   container: {
     display: "flex",
@@ -123,13 +124,6 @@ const rows = [
 export default function DashBoard() {
   const classes = useStyles();
 
-  const dataAtual = new Date();
-  const dia = dataAtual.getDate();
-  const mes = dataAtual.getMonth() + 1;
-  const ano = dataAtual.getFullYear();
-
-  const dataCalendario = ano + "-" + mes + "-" + dia;
-
   const [openModalIni, setOpenModalIni] = React.useState(false);
 
   const handleOpen = () => {
@@ -140,10 +134,20 @@ export default function DashBoard() {
     setOpenModalIni(false);
   };
 
+  const dataAtual = new Date();
+  var MyDateString = 0;
+
+  MyDateString =
+    dataAtual.getFullYear() +
+    "-" +
+    ("0" + (dataAtual.getMonth() + 1)).slice(-2) +
+    "-" +
+    ("0" + dataAtual.getDate()).slice(-2);
+
   return (
     <div>
       <TableContainer className={classes.tableContainer}>
-        <Typography component="h1" variant="h2" className={classes.titulo}>
+        <Typography component="h1" variant="h3" className={classes.titulo}>
           DASHBOARD
         </Typography>
         <Table className={classes.table} component={Paper}>
@@ -155,7 +159,7 @@ export default function DashBoard() {
                     id="date"
                     label="Selecione uma data:"
                     type="date"
-                    defaultValue={dataCalendario}
+                    defaultValue={MyDateString}
                     className={classes.textField}
                     InputLabelProps={{
                       shrink: true,
