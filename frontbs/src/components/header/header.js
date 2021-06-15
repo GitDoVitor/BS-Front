@@ -85,14 +85,14 @@ export default function Header() {
         open={Boolean(anchorEmpres)}
         onClose={handleCloseMenu}
       >
-        <MenuItem onHover={handleCloseMenu}>
-          <Link className={classes.link} to="/andamento">
-            <Typography className={classes.itemDrop}>Em Andamento</Typography>
-          </Link>
-        </MenuItem>
         <MenuItem onClick={handleCloseMenu}>
           <Link className={classes.link} to="/reservados">
             <Typography className={classes.itemDrop}>Reservados</Typography>
+          </Link>
+        </MenuItem>
+        <MenuItem onHover={handleCloseMenu}>
+          <Link className={classes.link} to="/andamento">
+            <Typography className={classes.itemDrop}>Em Andamento</Typography>
           </Link>
         </MenuItem>
         <MenuItem onClick={handleCloseMenu}>
