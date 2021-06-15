@@ -6,7 +6,6 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
 import {
   Button,
   Card,
@@ -36,11 +35,6 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexWrap: "wrap",
   },
-  textField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    width: 200,
-  },
   cardDash: {
     width: 495,
     height: 180,
@@ -65,7 +59,6 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 14,
     marginTop: 8,
   },
-
   modal: {
     display: "flex",
     alignItems: "center",
@@ -150,12 +143,13 @@ export default function DashBoard() {
         <Typography component="h1" variant="h3" className={classes.titulo}>
           DASHBOARD
         </Typography>
-        <Table className={classes.table} component={Paper}>
+        <Table className={classes.table}>
           <TableHead>
             <TableRow>
               <StyledTableCell align="right">
                 <form className={classes.container} noValidate>
                   <TextField
+                    color="white"
                     id="date"
                     label="Selecione uma data:"
                     type="date"

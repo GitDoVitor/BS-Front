@@ -2,12 +2,8 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import SearchIcon from "@material-ui/icons/Search";
 import {
-  Backdrop,
-  Button,
-  Fade,
   Grid,
   InputAdornment,
-  Modal,
   Table,
   TableBody,
   TableCell,
@@ -18,12 +14,10 @@ import {
   Typography,
   withStyles,
 } from "@material-ui/core";
-import AddIcon from "@material-ui/icons/Add";
-import { Link } from "react-router-dom";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
-    backgroundColor: "#FFF857",
+    backgroundColor: "#2F972D",
     color: theme.palette.common.black,
   },
   body: {
@@ -61,32 +55,6 @@ const useStyles = makeStyles((theme) => ({
     color: "#143362",
     fontFamily: "Tauri, sans-serif",
   },
-  modal: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  paper: {
-    backgroundColor: theme.palette.background.paper,
-    border: "2px solid #000",
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
-  },
-  botaoIniciar: {
-    backgroundColor: "#2C60AD",
-    color: "#FFFFFF",
-    marginLeft: 10,
-    "&:hover": {
-      backgroundColor: "#25477A",
-    },
-  },
-  botaoCancelar: {
-    borderColor: "#2C60AD",
-    color: "#2C60AD",
-  },
-  gridBotoesModal: {
-    marginTop: 10,
-  },
   barraPesquisa: {
     width: 680,
     marginTop: 10,
@@ -105,16 +73,6 @@ const useStyles = makeStyles((theme) => ({
 export default function Emprestimos() {
   const classes = useStyles();
 
-  const [openModalIni, setOpenModalIni] = React.useState(false);
-
-  const handleOpen = () => {
-    setOpenModalIni(true);
-  };
-
-  const handleClose = () => {
-    setOpenModalIni(false);
-  };
-
   const dataAtual = new Date();
   var MyDateString = 0;
 
@@ -129,7 +87,7 @@ export default function Emprestimos() {
     <div>
       <TableContainer className={classes.tableContainer}>
         <Typography component="h1" variant="h3" className={classes.titulo}>
-          EMPRÉSTIMOS RESERVADOS
+          EMPRÉSTIMOS REALIZADOS
         </Typography>
         <Grid
           container
@@ -181,11 +139,6 @@ export default function Emprestimos() {
               <StyledTableCell align="right">Valor</StyledTableCell>
               <StyledTableCell align="right">Data Inicial</StyledTableCell>
               <StyledTableCell align="right">Data Final</StyledTableCell>
-              <StyledTableCell align="center">
-                <Link to="/formularioEmprestimo">
-                  <AddIcon />
-                </Link>
-              </StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -202,53 +155,11 @@ export default function Emprestimos() {
                   {row.dataInicial}
                 </StyledTableCell>
                 <StyledTableCell align="right">{row.dataFinal}</StyledTableCell>
-                <StyledTableCell align="center">
-                  <Button variant="outlined" onClick={handleOpen}>
-                    Iniciar
-                  </Button>
-                </StyledTableCell>
               </StyledTableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
-
-      <Modal
-        className={classes.modal}
-        open={openModalIni}
-        onClose={handleClose}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
-      >
-        <Fade in={openModalIni}>
-          <div className={classes.paper}>
-            <Typography style={{ fontSize: 16 }}>
-              Quer realmente iniciar este empréstimo?
-            </Typography>
-            <Grid
-              container
-              direction="row"
-              justify="flex-end"
-              alignItems="center"
-              className={classes.gridBotoesModal}
-            >
-              <Button
-                variant="outlined"
-                className={classes.botaoCancelar}
-                onClick={handleClose}
-              >
-                Cancelar
-              </Button>
-              <Button className={classes.botaoIniciar} onClick={handleClose}>
-                Confirmar
-              </Button>
-            </Grid>
-          </div>
-        </Fade>
-      </Modal>
     </div>
   );
 }
