@@ -16,6 +16,7 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
+import CloseIcon from "@material-ui/icons/Close";
 
 const useStyles = makeStyles((theme) => ({
   tableContainer: {
@@ -75,8 +76,8 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-function createData(editora, quantLivro) {
-  return { editora, quantLivro };
+function createData(editora) {
+  return { editora };
 }
 
 const rows = [createData("Companhia das Letras", 894)];
@@ -105,9 +106,6 @@ export default function Editoras() {
             <TableRow>
               <StyledTableCell align="left">Nome da Editora</StyledTableCell>
               <StyledTableCell align="right">
-                Quantidades de Livros Cadastrados
-              </StyledTableCell>
-              <StyledTableCell align="right">
                 <Button style={{ color: "white" }}>
                   <AddIcon />
                 </Button>
@@ -121,18 +119,8 @@ export default function Editoras() {
                   {row.editora}
                 </StyledTableCell>
                 <StyledTableCell align="right">
-                  {row.quantLivro}
-                </StyledTableCell>
-                <StyledTableCell align="right">
-                  <Button variant="outlined" onClick={handleOpen}>
-                    Editar
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    onClick={handleOpen}
-                    style={{ left: 10 }}
-                  >
-                    Excluir
+                  <Button onClick={handleOpen}>
+                    <CloseIcon />
                   </Button>
                 </StyledTableCell>
               </StyledTableRow>
@@ -154,7 +142,7 @@ export default function Editoras() {
         <Fade in={openModalIni}>
           <div className={classes.paper}>
             <Typography style={{ fontSize: 16 }}>
-              Quer realmente iniciar este empréstimo?
+              Quer realmente excluir essa editora?
             </Typography>
             <Grid
               container

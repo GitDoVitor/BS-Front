@@ -16,6 +16,7 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
+import CloseIcon from "@material-ui/icons/Close";
 
 const useStyles = makeStyles((theme) => ({
   tableContainer: {
@@ -75,8 +76,8 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-function createData(autor) {
-  return { autor };
+function createData(genero) {
+  return { genero };
 }
 
 const rows = [createData("Comédia")];
@@ -113,20 +114,13 @@ export default function Autores() {
           </TableHead>
           <TableBody>
             {rows.map((row) => (
-              <StyledTableRow key={row.autor}>
+              <StyledTableRow key={row.genero}>
                 <StyledTableCell component="th" scope="row">
-                  {row.autor}
+                  {row.genero}
                 </StyledTableCell>
                 <StyledTableCell align="right">
-                  <Button variant="outlined" onClick={handleOpen}>
-                    Editar
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    onClick={handleOpen}
-                    style={{ left: 10 }}
-                  >
-                    Excluir
+                  <Button onClick={handleOpen}>
+                    <CloseIcon />
                   </Button>
                 </StyledTableCell>
               </StyledTableRow>
@@ -148,7 +142,7 @@ export default function Autores() {
         <Fade in={openModalIni}>
           <div className={classes.paper}>
             <Typography style={{ fontSize: 16 }}>
-              Quer realmente iniciar este empréstimo?
+              Quer realmente excluir este gênero?
             </Typography>
             <Grid
               container

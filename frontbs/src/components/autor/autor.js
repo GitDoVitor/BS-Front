@@ -16,6 +16,7 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
+import CloseIcon from "@material-ui/icons/Close";
 
 const useStyles = makeStyles((theme) => ({
   tableContainer: {
@@ -118,15 +119,8 @@ export default function Autores() {
                   {row.autor}
                 </StyledTableCell>
                 <StyledTableCell align="right">
-                  <Button variant="outlined" onClick={handleOpen}>
-                    Editar
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    onClick={handleOpen}
-                    style={{ left: 10 }}
-                  >
-                    Excluir
+                  <Button onClick={handleOpen}>
+                    <CloseIcon />
                   </Button>
                 </StyledTableCell>
               </StyledTableRow>
@@ -148,7 +142,7 @@ export default function Autores() {
         <Fade in={openModalIni}>
           <div className={classes.paper}>
             <Typography style={{ fontSize: 16 }}>
-              Quer realmente iniciar este empréstimo?
+              Quer realmente excluir essa autor?
             </Typography>
             <Grid
               container
