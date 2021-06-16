@@ -4,6 +4,7 @@
     align-content: center;
     height: 100%;
     margin-top: 50px;
+    flex-wrap: wrap;
     
     form {
         margin: center;
@@ -11,6 +12,14 @@
         display: flex;
         flex-flow: row wrap;
         
+        .titulo {
+            color: #143362;
+            font-family: Tauri, "sans-serif";
+            width: 100%;
+            margin-bottom: 3px;
+            margin-top: 0px;
+            
+        }
 
         input, textarea {
             background-color: #F3F3F3;
