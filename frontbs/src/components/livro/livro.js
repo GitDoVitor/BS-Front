@@ -193,7 +193,7 @@ export default function Livros() {
                   {row.ISBN}
                 </StyledTableCell>
                 <StyledTableCell align="right">
-                  <Button>
+                <Button>
                     <MoreHorizIcon />
                   </Button>
                 </StyledTableCell>

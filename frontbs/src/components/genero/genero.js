@@ -28,15 +28,19 @@ const useStyles = makeStyles((theme) => ({
     color: "#143362",
     fontFamily: "Tauri, sans-serif",
   },
-
+  tituloModal: {
+    fontSize: "26px",
+    color: "#143362",
+    fontFamily: "Tauri, sans-serif",
+  },  
   modal: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "center"
   },
   paper: {
     backgroundColor: theme.palette.background.paper,
-    border: "2px solid #000",
+    border: "0px solid #000",
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
   },
@@ -55,6 +59,22 @@ const useStyles = makeStyles((theme) => ({
   gridBotoesModal: {
     marginTop: 10,
   },
+  form: {
+    margin: "center",
+    width: "100%",
+    display: "flex",
+    flexFlow: "row wrap",
+  },
+  input: {
+    backgroundColor: "#F3F3F3",
+    border: "1px solid #C1C1C1",
+    padding: "8px",
+    marginRight:"7px",
+    marginBottom: "8px",
+    marginTop: "10px",
+    width: "100%"
+  },
+  
 }));
 
 const StyledTableCell = withStyles((theme) => ({
@@ -75,16 +95,17 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-function createData(autor) {
-  return { autor };
+function createData(genero) {
+  return { genero };
 }
 
 const rows = [createData("Comédia")];
 
-export default function Autores() {
+export default function Generos() {
   const classes = useStyles();
 
   const [openModalIni, setOpenModalIni] = React.useState(false);
+  const [openModalIniAdd, setOpenModalIniAdd] = React.useState(false);
 
   const handleOpen = () => {
     setOpenModalIni(true);
@@ -92,6 +113,14 @@ export default function Autores() {
 
   const handleClose = () => {
     setOpenModalIni(false);
+  };
+
+  const handleOpenAdd = () => {
+    setOpenModalIniAdd(true);
+  };
+
+  const handleCloseAdd = () => {
+    setOpenModalIniAdd(false);
   };
 
   return (
@@ -105,7 +134,7 @@ export default function Autores() {
             <TableRow>
               <StyledTableCell align="left">Nome do Gênero</StyledTableCell>
               <StyledTableCell align="right">
-                <Button style={{ color: "white" }}>
+                <Button style={{ color: "white" }} onClick={handleOpenAdd}>
                   <AddIcon />
                 </Button>
               </StyledTableCell>
@@ -113,9 +142,9 @@ export default function Autores() {
           </TableHead>
           <TableBody>
             {rows.map((row) => (
-              <StyledTableRow key={row.autor}>
+              <StyledTableRow key={row.genero}>
                 <StyledTableCell component="th" scope="row">
-                  {row.autor}
+                  {row.genero}
                 </StyledTableCell>
                 <StyledTableCell align="right">
                   <Button variant="outlined" onClick={handleOpen}>
@@ -165,6 +194,48 @@ export default function Autores() {
                 Cancelar
               </Button>
               <Button className={classes.botaoIniciar} onClick={handleClose}>
+                Confirmar
+              </Button>
+            </Grid>
+          </div>
+        </Fade>
+      </Modal>
+
+      <Modal
+        className={classes.modal}
+        open={openModalIniAdd}
+        onClose={handleCloseAdd}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={openModalIniAdd}>
+          <div className={classes.paper}>
+            <Typography component="h1" variant="h3" className={classes.tituloModal}>
+              Adicionar novo gênero
+            </Typography>
+
+            <form className={classes.form}>
+            <input className={classes.input} type="text" name="name" placeholder="Nome"/>
+            </form>
+
+            <Grid
+              container
+              direction="row"
+              justify="flex-end"
+              alignItems="center"
+              className={classes.gridBotoesModal}
+            >
+              <Button
+                variant="outlined"
+                className={classes.botaoCancelar}
+                onClick={handleCloseAdd}
+              >
+                Cancelar
+              </Button>
+              <Button className={classes.botaoIniciar} onClick={handleCloseAdd}>
                 Confirmar
               </Button>
             </Grid>

@@ -29,12 +29,15 @@ export default class FormularioIndex extends Component {
         return (
           <div id="container-formulario-emprestimo">
             <form>
+            <h1 className="titulo">Novo Empréstimo</h1>
             <input className="tres-por-linha" type="text" name="name" placeholder="Livro"/>
             <input className="tres-por-linha input-data" type="date" name="name" placeholder="Data Inicial" onFocus={(e) => (e.currentTarget.type = "date")}
   onBlur={(e) => (e.currentTarget.type = "text")}/>
             <input className="tres-por-linha input-data" type="date" name="name" placeholder="Data Final" onFocus={(e) => (e.currentTarget.type = "date")}
   onBlur={(e) => (e.currentTarget.type = "text")}/>
 
+            <button className="botao-pesquisar-livro" type="button" onClick={this.showModal}>PESQUISAR LIVRO</button>
+            
             <Modal show={this.state.show} handleClose={this.hideModal}>
                 <div className="modal-verificar">
                 <h2>Verificar disponibilidade</h2>
@@ -68,9 +71,6 @@ export default class FormularioIndex extends Component {
                     <input className="botao-confirmar-modal" type="submit" value="CONFIRMAR" />
                 </div>
             </Modal>
-
-            <button className="botao-pesquisar-livro" type="button" onClick={this.showModal}>PESQUISAR LIVRO</button>
-            
 
             <input className="dois-por-linha" type="text" name="name" placeholder="Nome do cliente"/>
             <input className="dois-por-linha" type="text" name="name" placeholder="Telefone"/>
