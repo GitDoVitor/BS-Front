@@ -86,6 +86,11 @@ export default function Header() {
         onClose={handleCloseMenu}
       >
         <MenuItem onClick={handleCloseMenu}>
+          <Link className={classes.link} to="/formularioEmprestimo">
+            <Typography className={classes.itemDrop}>Novo empréstimo</Typography>
+          </Link>
+        </MenuItem>
+        <MenuItem onClick={handleCloseMenu}>
           <Link className={classes.link} to="/reservados">
             <Typography className={classes.itemDrop}>Reservados</Typography>
           </Link>

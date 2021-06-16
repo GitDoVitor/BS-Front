@@ -4,8 +4,9 @@ import "./FormularioIndexStyle.scss";
 export default function FormularioIndex() {
     return (
         <div id="container-formulario">
+            
             <form>
-
+            <h1 className="titulo">Adicionar livro</h1>
             <input className="dois-por-linha" type="text" name="name" placeholder="Título"/>
             <input className="dois-por-linha" type="text" name="name" placeholder="Gênero"/>
 
