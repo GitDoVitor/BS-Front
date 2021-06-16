@@ -9,7 +9,14 @@ import Tabela from "./components/tabelas/TabelaEmprestimosIndex";
 import Formulario from "./components/formularios/FormularioIndex";
 import FormularioEmprestimo from "./components/formularios/FormularioEmprestimo";
 import Reservados from "./components/emprestimo/emprestimoReservado";
+import Andamento from "./components/emprestimo/emprestimoAndamento";
+import Realizados from "./components/emprestimo/emprestimoRealizado";
+import Cancelados from "./components/emprestimo/emprestimoCancelado";
 import NTF from "./components/notFound/pageNotFound";
+import Autores from "./components/autor/autor";
+import Editoras from "./components/editora/editora";
+import Generos from "./components/genero/genero";
+import Livros from "./components/livro/livro";
 
 export default class App extends Component {
   componentDidMount() {
@@ -45,35 +52,24 @@ export default class App extends Component {
           <Route path="/realizados">
             <Realizados />
           </Route>
-          <Route path="/tabelaLivros">
-            <Tabela />
-          </Route>
           <Route path="/formulario">
             <Formulario />
           </Route>
           <Route path="/formularioEmprestimo">
             <FormularioEmprestimo />
           </Route>
-
+          <Route path="/editoras">
+            <Editoras />
+          </Route>
+          <Route path="/autores">
+            <Autores />
+          </Route>
+          <Route path="/generos">
+            <Generos />
+          </Route>
           <Route component={NTF} />
         </Switch>
       </Router>
     );
   }
-}
-
-function Livros() {
-  return <h1>Tabela de Livros</h1>;
-}
-
-function Andamento() {
-  return <h1>Tabela de Emprestimos em Andamento</h1>;
-}
-
-function Cancelados() {
-  return <h1>Tabela de Emprestimos Cancelados</h1>;
-}
-
-function Realizados() {
-  return <h1>Tabela de Emprestimos Realizados</h1>;
 }

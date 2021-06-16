@@ -18,12 +18,10 @@ import {
   Typography,
   withStyles,
 } from "@material-ui/core";
-import AddIcon from "@material-ui/icons/Add";
-import { Link } from "react-router-dom";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
-    backgroundColor: "#FFF857",
+    backgroundColor: "#7BC0FF",
     color: theme.palette.common.black,
   },
   body: {
@@ -105,14 +103,32 @@ const useStyles = makeStyles((theme) => ({
 export default function Emprestimos() {
   const classes = useStyles();
 
-  const [openModalIni, setOpenModalIni] = React.useState(false);
+  const [openModalFinaliza, setOpenModalFinaliza] = React.useState(false);
+  const [openModalCancela, setOpenModalCancela] = React.useState(false);
+  const [openModalRenova, setOpenModalRenova] = React.useState(false);
 
-  const handleOpen = () => {
-    setOpenModalIni(true);
+  const handleOpenFinaliza = () => {
+    setOpenModalFinaliza(true);
   };
 
-  const handleClose = () => {
-    setOpenModalIni(false);
+  const handleCloseFinaliza = () => {
+    setOpenModalFinaliza(false);
+  };
+
+  const handleOpenCancela = () => {
+    setOpenModalCancela(true);
+  };
+
+  const handleCloseCancela = () => {
+    setOpenModalCancela(false);
+  };
+
+  const handleOpenRenova = () => {
+    setOpenModalRenova(true);
+  };
+
+  const handleCloseRenova = () => {
+    setOpenModalRenova(false);
   };
 
   const dataAtual = new Date();
@@ -129,7 +145,7 @@ export default function Emprestimos() {
     <div>
       <TableContainer className={classes.tableContainer}>
         <Typography component="h1" variant="h3" className={classes.titulo}>
-          EMPRÉSTIMOS RESERVADOS
+          EMPRÉSTIMOS EM ANDAMENTO
         </Typography>
         <Grid
           container
@@ -181,11 +197,7 @@ export default function Emprestimos() {
               <StyledTableCell align="right">Valor</StyledTableCell>
               <StyledTableCell align="right">Data Inicial</StyledTableCell>
               <StyledTableCell align="right">Data Final</StyledTableCell>
-              <StyledTableCell align="center">
-                <Link to="/formularioEmprestimo">
-                  <AddIcon />
-                </Link>
-              </StyledTableCell>
+              <StyledTableCell align="center">Ação</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -203,9 +215,22 @@ export default function Emprestimos() {
                 </StyledTableCell>
                 <StyledTableCell align="right">{row.dataFinal}</StyledTableCell>
                 <StyledTableCell align="center">
-                  <Button variant="outlined" onClick={handleOpen}>
-                    Iniciar
-                  </Button>
+                  <Grid
+                    container
+                    direction="row"
+                    justify="space-around"
+                    alignItems="center"
+                  >
+                    <Button variant="outlined" onClick={handleOpenFinaliza}>
+                      Finalizar
+                    </Button>
+                    <Button variant="outlined" onClick={handleOpenCancela}>
+                      Cancelar
+                    </Button>
+                    <Button variant="outlined" onClick={handleOpenRenova}>
+                      Renovar
+                    </Button>
+                  </Grid>
                 </StyledTableCell>
               </StyledTableRow>
             ))}
@@ -215,18 +240,18 @@ export default function Emprestimos() {
 
       <Modal
         className={classes.modal}
-        open={openModalIni}
-        onClose={handleClose}
+        open={openModalFinaliza}
+        onClose={handleCloseFinaliza}
         closeAfterTransition
         BackdropComponent={Backdrop}
         BackdropProps={{
           timeout: 500,
         }}
       >
-        <Fade in={openModalIni}>
+        <Fade in={openModalFinaliza}>
           <div className={classes.paper}>
             <Typography style={{ fontSize: 16 }}>
-              Quer realmente iniciar este empréstimo?
+              Quer realmente finalizar este empréstimo?
             </Typography>
             <Grid
               container
@@ -238,11 +263,94 @@ export default function Emprestimos() {
               <Button
                 variant="outlined"
                 className={classes.botaoCancelar}
-                onClick={handleClose}
+                onClick={handleCloseFinaliza}
               >
                 Cancelar
               </Button>
-              <Button className={classes.botaoIniciar} onClick={handleClose}>
+              <Button
+                className={classes.botaoIniciar}
+                onClick={handleCloseFinaliza}
+              >
+                Confirmar
+              </Button>
+            </Grid>
+          </div>
+        </Fade>
+      </Modal>
+
+      <Modal
+        className={classes.modal}
+        open={openModalCancela}
+        onClose={handleCloseCancela}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={openModalCancela}>
+          <div className={classes.paper}>
+            <Typography style={{ fontSize: 16 }}>
+              Quer realmente cancelar este empréstimo?
+            </Typography>
+            <Grid
+              container
+              direction="row"
+              justify="flex-end"
+              alignItems="center"
+              className={classes.gridBotoesModal}
+            >
+              <Button
+                variant="outlined"
+                className={classes.botaoCancelar}
+                onClick={handleCloseCancela}
+              >
+                Cancelar
+              </Button>
+              <Button
+                className={classes.botaoIniciar}
+                onClick={handleCloseCancela}
+              >
+                Confirmar
+              </Button>
+            </Grid>
+          </div>
+        </Fade>
+      </Modal>
+
+      <Modal
+        className={classes.modal}
+        open={openModalRenova}
+        onClose={handleCloseRenova}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={openModalRenova}>
+          <div className={classes.paper}>
+            <Typography style={{ fontSize: 16 }}>
+              Quer realmente renovar este empréstimo?
+            </Typography>
+            <Grid
+              container
+              direction="row"
+              justify="flex-end"
+              alignItems="center"
+              className={classes.gridBotoesModal}
+            >
+              <Button
+                variant="outlined"
+                className={classes.botaoCancelar}
+                onClick={handleCloseRenova}
+              >
+                Cancelar
+              </Button>
+              <Button
+                className={classes.botaoIniciar}
+                onClick={handleCloseRenova}
+              >
                 Confirmar
               </Button>
             </Grid>

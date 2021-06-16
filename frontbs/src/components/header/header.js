@@ -5,10 +5,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Button, Grid, Menu, MenuItem, Typography } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import ICONE from "../../images/Group 1.png";
-import LivroIcon from "@material-ui/icons/Class";
 import EditoraIcon from "@material-ui/icons/Apartment";
 import AutorIcon from "@material-ui/icons/Person";
-import EmprestimoIcon from "@material-ui/icons/Ballot";
 import GeneroIcon from "@material-ui/icons/CardMembership";
 
 const useStyles = makeStyles((theme) => ({
@@ -72,7 +70,7 @@ export default function Header() {
               EMPRÉSTIMOS
             </Button>
             <Button className={classes.botao} onClick={handleClickNovo}>
-              ADICIONAR NOVO
+              OUTROS
             </Button>
           </Grid>
         </Toolbar>
@@ -87,14 +85,14 @@ export default function Header() {
         open={Boolean(anchorEmpres)}
         onClose={handleCloseMenu}
       >
-        <MenuItem onHover={handleCloseMenu}>
-          <Link className={classes.link} to="/andamento">
-            <Typography className={classes.itemDrop}>Em Andamento</Typography>
-          </Link>
-        </MenuItem>
         <MenuItem onClick={handleCloseMenu}>
           <Link className={classes.link} to="/reservados">
             <Typography className={classes.itemDrop}>Reservados</Typography>
+          </Link>
+        </MenuItem>
+        <MenuItem onHover={handleCloseMenu}>
+          <Link className={classes.link} to="/andamento">
+            <Typography className={classes.itemDrop}>Em Andamento</Typography>
           </Link>
         </MenuItem>
         <MenuItem onClick={handleCloseMenu}>
@@ -118,7 +116,7 @@ export default function Header() {
         onClose={handleCloseMenu}
       >
         <MenuItem onHover={handleCloseMenu}>
-          <Link className={classes.link} to="/andamento">
+          <Link className={classes.link} to="/autores">
             <Typography className={classes.itemDrop}>
               <AutorIcon />
               Autor
@@ -126,23 +124,7 @@ export default function Header() {
           </Link>
         </MenuItem>
         <MenuItem onClick={handleCloseMenu}>
-          <Link className={classes.link} to="/formulario">
-            <Typography className={classes.itemDrop}>
-              <LivroIcon />
-              Livro
-            </Typography>
-          </Link>
-        </MenuItem>
-        <MenuItem onClick={handleCloseMenu}>
-          <Link className={classes.link} to="/formularioEmprestimo">
-            <Typography className={classes.itemDrop}>
-              <EmprestimoIcon />
-              Emprestimo
-            </Typography>
-          </Link>
-        </MenuItem>
-        <MenuItem onClick={handleCloseMenu}>
-          <Link className={classes.link} to="/cancelados">
+          <Link className={classes.link} to="/editoras">
             <Typography className={classes.itemDrop}>
               <EditoraIcon />
               Editora
@@ -150,7 +132,7 @@ export default function Header() {
           </Link>
         </MenuItem>
         <MenuItem onClick={handleCloseMenu}>
-          <Link className={classes.link} to="/cancelados">
+          <Link className={classes.link} to="/generos">
             <Typography className={classes.itemDrop}>
               <GeneroIcon />
               Gênero
