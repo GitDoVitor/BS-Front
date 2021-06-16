@@ -1,33 +1,132 @@
-import React, {Component} from "react";
-import Modal from '../modais/Modal.js';
+import React from "react";
+import {
+  Backdrop,
+  Button,
+  Fade,
+  Grid,
+  Modal,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+  withStyles,
+  makeStyles,
+} from "@material-ui/core";
+import AddIcon from "@material-ui/icons/Add";
 import "./FormularioEmprestimoStyle.scss";
+import { DataGrid } from '@material-ui/data-grid';
 
-export default class FormularioIndex extends Component {
-    
-    constructor() {
-        super();
-        this.state = {
-          show: false
-        };
-        this.showModal = this.showModal.bind(this);
-        this.hideModal = this.hideModal.bind(this);
-      }
-    
-      showModal = () => {
-        this.setState({ show: true });
-      };
-    
-      hideModal = () => {
-        this.setState({ show: false });
-      };
+const useStyles = makeStyles((theme) => ({
+  tableContainer: {
+    marginLeft: "auto",
+    marginRight: "auto",
+    width: 1000,
+    marginTop: 25,
+  },
+  titulo: {
+    color: "#143362",
+    fontFamily: "Tauri, sans-serif",
+  },
+  tituloModal: {
+    fontSize: "26px",
+    color: "#143362",
+    fontFamily: "Tauri, sans-serif",
+  },  
+  modal: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  paper: {
+    backgroundColor: theme.palette.background.paper,
+    border: "0px solid #000",
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
+  botaoIniciar: {
+    backgroundColor: "#2C60AD",
+    color: "#FFFFFF",
+    marginLeft: 10,
+    "&:hover": {
+      backgroundColor: "#25477A",
+    },
+  },
+  botaoCancelar: {
+    borderColor: "#2C60AD",
+    color: "#2C60AD",
+  },
+  gridBotoesModal: {
+    marginTop: 10,
+  },
+  form: {
+    margin: "center",
+    width: "100%",
+    display: "flex",
+    flexFlow: "row wrap",
+  },
+  input: {
+    backgroundColor: "#F3F3F3",
+    border: "1px solid #C1C1C1",
+    padding: "8px",
+    marginRight:"7px",
+    marginBottom: "8px",
+    marginTop: "10px",
+    width: "100%"
+  },
+  
+}));
 
-      hideModal2 = () => {
-        window.onclick({ show: false});
-      }
-        
-    render() {
-        return (
-          <div id="container-formulario-emprestimo">
+const StyledTableCell = withStyles((theme) => ({
+  head: {
+    backgroundColor: "#143362",
+    color: theme.palette.common.white,
+  },
+  body: {
+    fontSize: 14,
+  },
+}))(TableCell);
+
+const StyledTableRow = withStyles((theme) => ({
+  root: {
+    "&:nth-of-type(odd)": {
+      backgroundColor: theme.palette.action.hover,
+    },
+  },
+}))(TableRow);
+
+function createData(genero) {
+  return { genero };
+}
+
+const columns = [
+  { field: 'titulo', headerName: 'Título', width: 150, headerClassName: 'super-app-theme--header'},
+  { field: 'quantidade', headerName: 'Quantidade', width: 150, type: 'number', headerClassName: 'super-app-theme--header'},
+];
+
+const rows = [
+  { id: 1, titulo: 'Livro1', quantidade: 35 },
+  { id: 2, titulo: 'Livro2', quantidade: 42 },
+];
+
+export default function Generos() {
+  const classes = useStyles();
+
+  const [openModalIni, setOpenModalIni] = React.useState(false);
+  const [openModalIniAdd, setOpenModalIniAdd] = React.useState(false);
+
+  const handleOpen = () => {
+    setOpenModalIni(true);
+  };
+
+  const handleClose = () => {
+    setOpenModalIni(false);
+  };
+
+  return (
+    <div id="container-formulario-emprestimo">
             <form>
             <h1 className="titulo">Novo Empréstimo</h1>
             <input className="tres-por-linha" type="text" name="name" placeholder="Livro"/>
@@ -36,9 +135,18 @@ export default class FormularioIndex extends Component {
             <input className="tres-por-linha input-data" type="date" name="name" placeholder="Data Final" onFocus={(e) => (e.currentTarget.type = "date")}
   onBlur={(e) => (e.currentTarget.type = "text")}/>
 
-            <button className="botao-pesquisar-livro" type="button" onClick={this.showModal}>PESQUISAR LIVRO</button>
+            <button className="botao-pesquisar-livro" type="button" onClick={handleOpen}>PESQUISAR LIVRO</button>
             
-            <Modal show={this.state.show} handleClose={this.hideModal}>
+            <Modal 
+              className={classes.modal}
+              open={openModalIni}
+              onClose={handleClose}
+              closeAfterTransition
+              BackdropComponent={Backdrop}
+              BackdropProps={{
+              timeout: 500,
+             }}>
+              <Fade in={openModalIni}>
                 <div className="modal-verificar">
                 <h2>Verificar disponibilidade</h2>
                     <form>
@@ -49,27 +157,11 @@ export default class FormularioIndex extends Component {
     onBlur={(e) => (e.currentTarget.type = "text")}/>
                     </form>
                     <div id="container-tabela-modal">
-                        <table className="tabela">
-                            <tr>
-                                <th>Título</th>
-                                <th>Quantidade</th>
-                            </tr>
-                            <tr>
-                                <td>Livro 1</td>
-                                <td>5</td>                               
-                            </tr>
-                            <tr>
-                                <td>Livro 2</td>
-                                <td>2</td>                                
-                            </tr>
-                            <tr>
-                                <td>Livro 3</td>
-                                <td>3</td>
-                            </tr>
-                        </table>
+                      <DataGrid rows={rows} columns={columns} pageSize={5} checkboxSelection className={classes.root}/>
                     </div>
                     <input className="botao-confirmar-modal" type="submit" value="CONFIRMAR" />
                 </div>
+                </Fade>
             </Modal>
 
             <input className="dois-por-linha" type="text" name="name" placeholder="Nome do cliente"/>
@@ -79,6 +171,5 @@ export default class FormularioIndex extends Component {
             <input className="botao-confirmar" type="submit" value="CONFIRMAR" />
             </form>
           </div>
-        );
-    }
+  );
 }
