@@ -182,8 +182,13 @@ export default function Emprestimos() {
               <StyledTableCell align="right">Data Inicial</StyledTableCell>
               <StyledTableCell align="right">Data Final</StyledTableCell>
               <StyledTableCell align="center">
-                <Link to="/formularioEmprestimo">
-                  <AddIcon />
+                <Link
+                  to="/formularioEmprestimo"
+                  style={{ textDecoration: "none" }}
+                >
+                  <Button>
+                    <AddIcon />
+                  </Button>
                 </Link>
               </StyledTableCell>
             </TableRow>

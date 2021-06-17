@@ -14,10 +14,13 @@ import {
   Typography,
   withStyles,
   makeStyles,
+  TextField,
+  InputAdornment,
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import { Link } from "react-router-dom";
+import SearchIcon from "@material-ui/icons/Search";
 
 const useStyles = makeStyles((theme) => ({
   tableContainer: {
@@ -29,6 +32,11 @@ const useStyles = makeStyles((theme) => ({
   titulo: {
     color: "#143362",
     fontFamily: "Tauri, sans-serif",
+  },
+  barraPesquisa: {
+    width: 1300,
+    marginTop: 10,
+    marginBottom: 10,
   },
 
   modal: {
@@ -85,7 +93,6 @@ function createData(
   preco,
   edicao,
   idioma,
-  // paginas,
   dataPub,
   ISBN
 ) {
@@ -97,7 +104,6 @@ function createData(
     preco,
     edicao,
     idioma,
-    // paginas,
     dataPub,
     ISBN,
   };
@@ -112,7 +118,6 @@ const rows = [
     20,
     1,
     "PT-BR",
-    // 268,
     "03/10/2017",
     9788551002476
   ),
@@ -137,6 +142,17 @@ export default function Livros() {
         <Typography component="h1" variant="h3" className={classes.titulo}>
           LIVROS
         </Typography>
+        <TextField
+          className={classes.barraPesquisa}
+          label="Pesquisar"
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon />
+              </InputAdornment>
+            ),
+          }}
+        />
         <Table className={classes.table} aria-label="customized table">
           <TableHead>
             <TableRow>
@@ -147,7 +163,6 @@ export default function Livros() {
               <StyledTableCell align="right">Preço</StyledTableCell>
               <StyledTableCell align="right">Edição</StyledTableCell>
               <StyledTableCell align="right">Idioma</StyledTableCell>
-              {/* <StyledTableCell align="right">Nº de Páginas</StyledTableCell> */}
               <StyledTableCell align="right">
                 Data de Publicação
               </StyledTableCell>
@@ -183,9 +198,6 @@ export default function Livros() {
                 <StyledTableCell component="th" scope="row">
                   {row.idioma}
                 </StyledTableCell>
-                {/* <StyledTableCell component="th" scope="row">
-                  {row.paginas}
-                </StyledTableCell> */}
                 <StyledTableCell component="th" scope="row">
                   {row.dataPub}
                 </StyledTableCell>
@@ -193,7 +205,7 @@ export default function Livros() {
                   {row.ISBN}
                 </StyledTableCell>
                 <StyledTableCell align="right">
-                <Button>
+                  <Button onClick={handleOpen}>
                     <MoreHorizIcon />
                   </Button>
                 </StyledTableCell>
@@ -216,7 +228,7 @@ export default function Livros() {
         <Fade in={openModalIni}>
           <div className={classes.paper}>
             <Typography style={{ fontSize: 16 }}>
-              Quer realmente iniciar este empréstimo?
+              O que quer fazer com esse livro?
             </Typography>
             <Grid
               container
@@ -226,14 +238,17 @@ export default function Livros() {
               className={classes.gridBotoesModal}
             >
               <Button
-                variant="outlined"
                 className={classes.botaoCancelar}
+                variant="outlined"
                 onClick={handleClose}
               >
                 Cancelar
               </Button>
               <Button className={classes.botaoIniciar} onClick={handleClose}>
-                Confirmar
+                Excluir
+              </Button>
+              <Button onClick={handleClose} className={classes.botaoIniciar}>
+                Editar
               </Button>
             </Grid>
           </div>

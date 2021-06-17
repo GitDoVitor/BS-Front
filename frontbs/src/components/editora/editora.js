@@ -16,6 +16,7 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
+import CloseIcon from "@material-ui/icons/Close";
 
 const useStyles = makeStyles((theme) => ({
   tableContainer: {
@@ -32,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "26px",
     color: "#143362",
     fontFamily: "Tauri, sans-serif",
-  }, 
+  },
   modal: {
     display: "flex",
     alignItems: "center",
@@ -69,10 +70,10 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#F3F3F3",
     border: "1px solid #C1C1C1",
     padding: "8px",
-    marginRight:"7px",
+    marginRight: "7px",
     marginBottom: "8px",
     marginTop: "10px",
-    width: "100%"
+    width: "100%",
   },
 }));
 
@@ -94,8 +95,8 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-function createData(editora, quantLivro) {
-  return { editora, quantLivro };
+function createData(editora) {
+  return { editora };
 }
 
 const rows = [createData("Companhia das Letras", 894)];
@@ -113,7 +114,7 @@ export default function Editoras() {
   const handleClose = () => {
     setOpenModalIni(false);
   };
-  
+
   const handleOpenAdd = () => {
     setOpenModalIniAdd(true);
   };
@@ -133,10 +134,7 @@ export default function Editoras() {
             <TableRow>
               <StyledTableCell align="left">Nome da Editora</StyledTableCell>
               <StyledTableCell align="right">
-                Quantidades de Livros Cadastrados
-              </StyledTableCell>
-              <StyledTableCell align="right">
-                <Button style={{ color: "white" }} onClick={handleOpenAdd}>
+                <Button style={{ color: "white" }}>
                   <AddIcon />
                 </Button>
               </StyledTableCell>
@@ -149,18 +147,8 @@ export default function Editoras() {
                   {row.editora}
                 </StyledTableCell>
                 <StyledTableCell align="right">
-                  {row.quantLivro}
-                </StyledTableCell>
-                <StyledTableCell align="right">
-                  <Button variant="outlined" onClick={handleOpen}>
-                    Editar
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    onClick={handleOpen}
-                    style={{ left: 10 }}
-                  >
-                    Excluir
+                  <Button onClick={handleOpen}>
+                    <CloseIcon />
                   </Button>
                 </StyledTableCell>
               </StyledTableRow>
@@ -182,7 +170,7 @@ export default function Editoras() {
         <Fade in={openModalIni}>
           <div className={classes.paper}>
             <Typography style={{ fontSize: 16 }}>
-              Quer realmente iniciar este empréstimo?
+              Quer realmente excluir essa editora?
             </Typography>
             <Grid
               container
@@ -218,12 +206,21 @@ export default function Editoras() {
       >
         <Fade in={openModalIniAdd}>
           <div className={classes.paper}>
-            <Typography component="h1" variant="h3" className={classes.tituloModal}>
+            <Typography
+              component="h1"
+              variant="h3"
+              className={classes.tituloModal}
+            >
               Adicionar nova editora
             </Typography>
 
             <form className={classes.form}>
-            <input className={classes.input} type="text" name="name" placeholder="Nome"/>
+              <input
+                className={classes.input}
+                type="text"
+                name="name"
+                placeholder="Nome"
+              />
             </form>
 
             <Grid

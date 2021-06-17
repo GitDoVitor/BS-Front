@@ -5,9 +5,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Button, Grid, Menu, MenuItem, Typography } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import ICONE from "../../images/Group 1.png";
-import EditoraIcon from "@material-ui/icons/Apartment";
-import AutorIcon from "@material-ui/icons/Person";
-import GeneroIcon from "@material-ui/icons/CardMembership";
 
 const useStyles = makeStyles((theme) => ({
   link: {
@@ -87,7 +84,9 @@ export default function Header() {
       >
         <MenuItem onClick={handleCloseMenu}>
           <Link className={classes.link} to="/formularioEmprestimo">
-            <Typography className={classes.itemDrop}>Novo empréstimo</Typography>
+            <Typography className={classes.itemDrop}>
+              Novo empréstimo
+            </Typography>
           </Link>
         </MenuItem>
         <MenuItem onClick={handleCloseMenu}>
@@ -122,26 +121,17 @@ export default function Header() {
       >
         <MenuItem onHover={handleCloseMenu}>
           <Link className={classes.link} to="/autores">
-            <Typography className={classes.itemDrop}>
-              <AutorIcon />
-              Autor
-            </Typography>
+            <Typography className={classes.itemDrop}>Autor</Typography>
           </Link>
         </MenuItem>
         <MenuItem onClick={handleCloseMenu}>
           <Link className={classes.link} to="/editoras">
-            <Typography className={classes.itemDrop}>
-              <EditoraIcon />
-              Editora
-            </Typography>
+            <Typography className={classes.itemDrop}>Editora</Typography>
           </Link>
         </MenuItem>
         <MenuItem onClick={handleCloseMenu}>
           <Link className={classes.link} to="/generos">
-            <Typography className={classes.itemDrop}>
-              <GeneroIcon />
-              Gênero
-            </Typography>
+            <Typography className={classes.itemDrop}>Gênero</Typography>
           </Link>
         </MenuItem>
       </Menu>

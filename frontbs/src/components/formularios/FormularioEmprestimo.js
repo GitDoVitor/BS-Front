@@ -1,24 +1,9 @@
 import React from "react";
-import {
-  Backdrop,
-  Button,
-  Fade,
-  Grid,
-  Modal,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Typography,
-  withStyles,
-  makeStyles,
-} from "@material-ui/core";
-import AddIcon from "@material-ui/icons/Add";
+import { Backdrop, Fade, Modal, makeStyles } from "@material-ui/core";
 import "./FormularioEmprestimoStyle.scss";
 import { DataGrid } from '@material-ui/data-grid';
 import { GridColumns } from "@material-ui/data-grid";
+
 
 const useStyles = makeStyles((theme) => ({
   tableContainer: {
@@ -39,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
   modal: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   paper: {
     backgroundColor: theme.palette.background.paper,
@@ -75,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: "7px",
     marginBottom: "8px",
     marginTop: "10px",
-    width: "100%"
+    width: "100%",
   },
   root: {
     '& .super-app-theme--header': {
@@ -104,21 +89,19 @@ const useStyles = makeStyles((theme) => ({
   },  
 }));
 
-const StyledTableCell = withStyles((theme) => ({
-  head: {
-    backgroundColor: "#143362",
-    color: theme.palette.common.white,
+const columns = [
+  {
+    field: "titulo",
+    headerName: "Título",
+    width: 150,
+    headerClassName: "super-app-theme--header",
   },
-  body: {
-    fontSize: 14,
-  },
-}))(TableCell);
-
-const StyledTableRow = withStyles((theme) => ({
-  root: {
-    "&:nth-of-type(odd)": {
-      backgroundColor: theme.palette.action.hover,
-    },
+  {
+    field: "quantidade",
+    headerName: "Quantidade",
+    width: 150,
+    type: "number",
+    headerClassName: "super-app-theme--header",
   },
 }))(TableRow);
 
@@ -149,15 +132,14 @@ const columns: GridColumns = [
 ];
 
 const rows = [
-  { id: 1, titulo: 'Livro1', quantidade: 35 },
-  { id: 2, titulo: 'Livro2', quantidade: 42 },
+  { id: 1, titulo: "Livro1", quantidade: 35 },
+  { id: 2, titulo: "Livro2", quantidade: 42 },
 ];
 
 export default function Generos() {
   const classes = useStyles();
 
   const [openModalIni, setOpenModalIni] = React.useState(false);
-  
   const handleOpen = () => {
     setOpenModalIni(true);
   };
@@ -226,10 +208,9 @@ export default function Generos() {
           </Fade>
         </Modal>
 
+
         <input className="dois-por-linha" type="text" name="name" placeholder="Nome do cliente" />
         <input className="dois-por-linha" type="text" name="name" placeholder="Telefone" />
-
-
         <input className="botao-confirmar" type="submit" value="CONFIRMAR" />
       </form>
     </div>
