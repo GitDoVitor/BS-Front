@@ -5,7 +5,6 @@ import React, { Component } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import DashBoard from "./components/dashboard/dashBoard";
-import Tabela from "./components/tabelas/TabelaEmprestimosIndex";
 import Formulario from "./components/formularios/FormularioIndex";
 import FormularioEmprestimo from "./components/formularios/FormularioEmprestimo";
 import Reservados from "./components/emprestimo/emprestimoReservado";
