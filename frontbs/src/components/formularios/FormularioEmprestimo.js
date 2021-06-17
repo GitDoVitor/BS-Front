@@ -1,7 +1,9 @@
 import React from "react";
 import { Backdrop, Fade, Modal, makeStyles } from "@material-ui/core";
 import "./FormularioEmprestimoStyle.scss";
-import { DataGrid } from "@material-ui/data-grid";
+import { DataGrid } from '@material-ui/data-grid';
+import { GridColumns } from "@material-ui/data-grid";
+
 
 const useStyles = makeStyles((theme) => ({
   tableContainer: {
@@ -60,6 +62,31 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "10px",
     width: "100%",
   },
+  root: {
+    '& .super-app-theme--header': {
+      backgroundColor: '#143362',
+      color: "white",
+      fontSize: "14px",
+    },
+    '& .super-app-theme--cell': {
+      textAlign: "center",
+    }
+  },
+  form: {
+    margin: "center",
+    width: "100%",
+    display: "flex",
+    flexFlow: "row wrap",
+  },
+  input: {
+    backgroundColor: "#F3F3F3",
+    border: "1px solid #C1C1C1",
+    padding: "8px",
+    marginRight:"7px",
+    marginBottom: "8px",
+    marginTop: "10px",
+    width: "100%"
+  },  
 }));
 
 const columns = [
@@ -76,6 +103,32 @@ const columns = [
     type: "number",
     headerClassName: "super-app-theme--header",
   },
+}))(TableRow);
+
+function createData(genero) {
+  return { genero };
+}
+
+const columns: GridColumns = [
+  { 
+    field: 'titulo', 
+    headerName: 'Título', 
+    width: 150, 
+    headerClassName: 'super-app-theme--header',
+    cellClassName: 'super-app-theme--cell',
+    headerAlign: 'center',
+    flex: 1 
+  },
+  { 
+    field: 'quantidade', 
+    headerName: 'Quantidade', 
+    width: 150, 
+    type: 'number', 
+    headerClassName: 'super-app-theme--header',
+    cellClassName: 'super-app-theme--cell',
+    headerAlign: 'center',
+    flex: 1
+  },
 ];
 
 const rows = [
@@ -87,7 +140,6 @@ export default function Generos() {
   const classes = useStyles();
 
   const [openModalIni, setOpenModalIni] = React.useState(false);
-
   const handleOpen = () => {
     setOpenModalIni(true);
   };
@@ -100,36 +152,13 @@ export default function Generos() {
     <div id="container-formulario-emprestimo">
       <form>
         <h1 className="titulo">Novo Empréstimo</h1>
-        <input
-          className="tres-por-linha"
-          type="text"
-          name="name"
-          placeholder="Livro"
-        />
-        <input
-          className="tres-por-linha input-data"
-          type="date"
-          name="name"
-          placeholder="Data Inicial"
-          onFocus={(e) => (e.currentTarget.type = "date")}
-          onBlur={(e) => (e.currentTarget.type = "text")}
-        />
-        <input
-          className="tres-por-linha input-data"
-          type="date"
-          name="name"
-          placeholder="Data Final"
-          onFocus={(e) => (e.currentTarget.type = "date")}
-          onBlur={(e) => (e.currentTarget.type = "text")}
-        />
+        <input className="tres-por-linha" type="text" name="name" placeholder="Livro" />
+        <input className="tres-por-linha input-data" type="date" name="name" placeholder="Data Inicial" onFocus={(e) => (e.currentTarget.type = "date")}
+          onBlur={(e) => (e.currentTarget.type = "text")} />
+        <input className="tres-por-linha input-data" type="date" name="name" placeholder="Data Final" onFocus={(e) => (e.currentTarget.type = "date")}
+          onBlur={(e) => (e.currentTarget.type = "text")} />
 
-        <button
-          className="botao-pesquisar-livro"
-          type="button"
-          onClick={handleOpen}
-        >
-          PESQUISAR LIVRO
-        </button>
+        <button className="botao-pesquisar-livro" type="button" onClick={handleOpen}>PESQUISAR LIVRO</button>
 
         <Modal
           className={classes.modal}
@@ -139,66 +168,49 @@ export default function Generos() {
           BackdropComponent={Backdrop}
           BackdropProps={{
             timeout: 500,
-          }}
-        >
+          }}>
           <Fade in={openModalIni}>
-            <div className="modal-verificar">
-              <h2>Verificar disponibilidade</h2>
-              <form>
-                <input
-                  className="um-por-linha"
-                  type="text"
-                  name="name"
-                  placeholder="Livro"
-                />
-                <input
-                  className="dois-por-linha-modal date-esquerda  input-data"
-                  type="date"
-                  name="name"
-                  placeholder="Data Inicial"
-                  onFocus={(e) => (e.currentTarget.type = "date")}
-                  onBlur={(e) => (e.currentTarget.type = "text")}
-                />
-                <input
-                  className="dois-por-linha-modal input-data"
-                  type="date"
-                  name="name"
-                  placeholder="Data Final"
-                  onFocus={(e) => (e.currentTarget.type = "date")}
-                  onBlur={(e) => (e.currentTarget.type = "text")}
-                />
+            <div className={classes.paper}>
+              <Typography component="h1" variant="h3" className={classes.tituloModal}>
+                Verificar disponibilidade
+              </Typography>
+
+              <form className={classes.form}>
+                <input className={classes.input} type="text" name="name" placeholder="Livro" />
+                <input className={classes.input} type="date" name="name" placeholder="Data Inicial" onFocus={(e) => (e.currentTarget.type = "date")}
+                  onBlur={(e) => (e.currentTarget.type = "text")} />
+                <input className={classes.input} type="date" name="name" placeholder="Data Final" onFocus={(e) => (e.currentTarget.type = "date")}
+                  onBlur={(e) => (e.currentTarget.type = "text")} />
               </form>
-              <div id="container-tabela-modal">
-                <DataGrid
-                  rows={rows}
-                  columns={columns}
-                  pageSize={5}
-                  checkboxSelection
-                  className={classes.root}
-                />
+              <div style={{ height: 300, width: '100%' }} className={classes.root}>
+                <DataGrid rows={rows} columns={columns} pageSize={5} checkboxSelection/>
               </div>
-              <input
-                className="botao-confirmar-modal"
-                type="submit"
-                value="CONFIRMAR"
-              />
+
+              <Grid
+                container
+                direction="row"
+                justify="flex-end"
+                alignItems="center"
+                className={classes.gridBotoesModal}
+              >
+                <Button
+                  variant="outlined"
+                  className={classes.botaoCancelar}
+                  onClick={handleClose}
+                >
+                  Cancelar
+                </Button>
+                <Button className={classes.botaoIniciar} onClick={handleClose}>
+                  Confirmar
+                </Button>
+              </Grid>
             </div>
           </Fade>
         </Modal>
 
-        <input
-          className="dois-por-linha"
-          type="text"
-          name="name"
-          placeholder="Nome do cliente"
-        />
-        <input
-          className="dois-por-linha"
-          type="text"
-          name="name"
-          placeholder="Telefone"
-        />
 
+        <input className="dois-por-linha" type="text" name="name" placeholder="Nome do cliente" />
+        <input className="dois-por-linha" type="text" name="name" placeholder="Telefone" />
         <input className="botao-confirmar" type="submit" value="CONFIRMAR" />
       </form>
     </div>
