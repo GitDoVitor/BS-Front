@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import SearchIcon from "@material-ui/icons/Search";
 import {
@@ -20,6 +20,7 @@ import {
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import { Link } from "react-router-dom";
+import api from "../requisicoes/axios";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -105,7 +106,8 @@ const useStyles = makeStyles((theme) => ({
 export default function Emprestimos() {
   const classes = useStyles();
 
-  const [openModalIni, setOpenModalIni] = React.useState(false);
+  const [openModalIni, setOpenModalIni] = useState(false);
+  const [reservados, setReservados] = useState();
 
   const handleOpen = () => {
     setOpenModalIni(true);
@@ -124,6 +126,10 @@ export default function Emprestimos() {
     ("0" + (dataAtual.getMonth() + 1)).slice(-2) +
     "-" +
     ("0" + dataAtual.getDate()).slice(-2);
+
+  api.get("emprestimos").then(function (resposta) {
+    console.log(resposta);
+  });
 
   return (
     <div>
@@ -194,12 +200,12 @@ export default function Emprestimos() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
-              <StyledTableRow key={row.cliente}>
+            {reservados?.map((row) => (
+              <StyledTableRow key={row.idEmprestimo}>
                 <StyledTableCell component="th" scope="row">
-                  {row.cliente}
+                  {row.nomeCliente}
                 </StyledTableCell>
-                <StyledTableCell align="right">{row.titulo}</StyledTableCell>
+                <StyledTableCell align="right">{row.exemplar}</StyledTableCell>
                 <StyledTableCell align="right">
                   R${row.valor},00
                 </StyledTableCell>
