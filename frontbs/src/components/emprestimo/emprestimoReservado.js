@@ -105,9 +105,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Emprestimos() {
   const classes = useStyles();
+  const [reload, setReload] = useState(true);
 
   const [openModalIni, setOpenModalIni] = useState(false);
-  const [reservados, setReservados] = useState();
+  const [reservados, setReservados] = useState([]);
 
   const handleOpen = () => {
     setOpenModalIni(true);
@@ -127,9 +128,12 @@ export default function Emprestimos() {
     "-" +
     ("0" + dataAtual.getDate()).slice(-2);
 
-  api.get("emprestimos").then(function (resposta) {
-    console.log(resposta);
-  });
+  useEffect(() => {
+    api.get("emprestimos").then((res) => {
+      setReservados(res.data);
+      console.log(res.data);
+    });
+  }, [reload]);
 
   return (
     <div>
@@ -200,14 +204,14 @@ export default function Emprestimos() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {reservados?.map((row) => (
+            {reservados.map((row) => (
               <StyledTableRow key={row.idEmprestimo}>
                 <StyledTableCell component="th" scope="row">
                   {row.nomeCliente}
                 </StyledTableCell>
                 <StyledTableCell align="right">{row.exemplar}</StyledTableCell>
                 <StyledTableCell align="right">
-                  R${row.valor},00
+                  R${row.valorTotal},00
                 </StyledTableCell>
                 <StyledTableCell align="right">
                   {row.dataInicial}
