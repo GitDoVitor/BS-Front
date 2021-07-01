@@ -63,6 +63,9 @@ export default function Header() {
             <Link to="/gerenciaLivro" className={classes.link}>
               <Button className={classes.botao}>LIVROS</Button>
             </Link>
+            <Link to="/gerenciaExemplares" className={classes.link}>
+              <Button className={classes.botao}>EXEMPLARES</Button>
+            </Link>
             <Button className={classes.botao} onClick={handleClickEmpres}>
               EMPRÉSTIMOS
             </Button>
