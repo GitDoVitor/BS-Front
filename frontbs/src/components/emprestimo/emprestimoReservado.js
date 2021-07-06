@@ -40,14 +40,6 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-function createData(cliente, titulo, valor, dataInicial, dataFinal) {
-  return { cliente, titulo, valor, dataInicial, dataFinal };
-}
-
-const rows = [
-  createData("Yasmin Guedes", "Percy Jackson", 50, "09/06/2021", "12/06/2021"),
-];
-
 const useStyles = makeStyles((theme) => ({
   table: {
     minWidth: 700,
@@ -106,16 +98,26 @@ const useStyles = makeStyles((theme) => ({
 export default function Emprestimos() {
   const classes = useStyles();
   const [reload, setReload] = useState(true);
+  const [idEmprestimoSubmit, setIdEmprestimoSubmit] = useState(0);
 
   const [openModalIni, setOpenModalIni] = useState(false);
   const [reservados, setReservados] = useState([]);
 
-  const handleOpen = () => {
+  const handleOpen = (id) => {
     setOpenModalIni(true);
+    setIdEmprestimoSubmit(id);
+    console.log(idEmprestimoSubmit);
   };
 
   const handleClose = () => {
+    console.log(idEmprestimoSubmit);
     setOpenModalIni(false);
+  };
+
+  const handleCloseSubmit = () => {
+    api.put("/iniciar/", idEmprestimoSubmit);
+    setOpenModalIni(false);
+    setReload(false);
   };
 
   const dataAtual = new Date();
@@ -129,7 +131,7 @@ export default function Emprestimos() {
     ("0" + dataAtual.getDate()).slice(-2);
 
   useEffect(() => {
-    api.get("emprestimos").then((res) => {
+    api.get("/emprestimos").then((res) => {
       setReservados(res.data);
       console.log(res.data);
     });
@@ -191,6 +193,7 @@ export default function Emprestimos() {
               <StyledTableCell align="right">Valor</StyledTableCell>
               <StyledTableCell align="right">Data Inicial</StyledTableCell>
               <StyledTableCell align="right">Data Final</StyledTableCell>
+              <StyledTableCell align="center">Status</StyledTableCell>
               <StyledTableCell align="center">
                 <Link
                   to="/formularioEmprestimo"
@@ -209,7 +212,9 @@ export default function Emprestimos() {
                 <StyledTableCell component="th" scope="row">
                   {row.nomeCliente}
                 </StyledTableCell>
-                <StyledTableCell align="right">{row.exemplar}</StyledTableCell>
+                <StyledTableCell align="right">
+                  {row.exemplar.livro.titulo}
+                </StyledTableCell>
                 <StyledTableCell align="right">
                   R${row.valorTotal},00
                 </StyledTableCell>
@@ -217,8 +222,17 @@ export default function Emprestimos() {
                   {row.dataInicial}
                 </StyledTableCell>
                 <StyledTableCell align="right">{row.dataFinal}</StyledTableCell>
+                <StyledTableCell align="center">{row.status}</StyledTableCell>
                 <StyledTableCell align="center">
-                  <Button variant="outlined" onClick={handleOpen}>
+                  <Button
+                    variant="outlined"
+                    onClick={() => handleOpen(
+                      row.idEmprestimo,
+                      row.titulo,
+                      row.valorTotal,
+                      row.
+                      )}
+                  >
                     Iniciar
                   </Button>
                 </StyledTableCell>
@@ -257,7 +271,10 @@ export default function Emprestimos() {
               >
                 Cancelar
               </Button>
-              <Button className={classes.botaoIniciar} onClick={handleClose}>
+              <Button
+                className={classes.botaoIniciar}
+                onClick={handleCloseSubmit}
+              >
                 Confirmar
               </Button>
             </Grid>
