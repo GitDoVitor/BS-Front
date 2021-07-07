@@ -17,6 +17,7 @@ import {
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import CloseIcon from "@material-ui/icons/Close";
+import api from "../requisicoes/axios";
 
 const useStyles = makeStyles((theme) => ({
   tableContainer: {
@@ -95,23 +96,45 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-function createData(editora) {
-  return { editora };
-}
-
-const rows = [createData("Companhia das Letras", 894)];
-
 export default function Editoras() {
   const classes = useStyles();
-
+  const [reload, setReload] = React.useState(true);
+  const [editoras, setEditoras] = React.useState([]);
+  const [idEditora, setIdEditora] = React.useState(0);
   const [openModalIni, setOpenModalIni] = React.useState(false);
   const [openModalIniAdd, setOpenModalIniAdd] = React.useState(false);
 
-  const handleOpen = () => {
+  const [data, setData] = React.useState({
+    nome: "",
+  });
+
+  function submit(e) {
+    api.post("editoras", {
+      nome: data.nome,
+    });
+    setOpenModalIniAdd(false);
+    setReload(!reload);
+  }
+
+  function handleForm(e) {
+    const newData = { ...data };
+    newData[e.target.id] = e.target.value;
+    console.log(newData);
+    setData(newData);
+  }
+
+  const handleOpen = (id) => {
+    setIdEditora(id);
     setOpenModalIni(true);
   };
 
   const handleClose = () => {
+    setOpenModalIni(false);
+  };
+
+  const handleCloseDEL = () => {
+    api.delete(`editoras/${idEditora}`);
+    setReload(!reload);
     setOpenModalIni(false);
   };
 
@@ -122,6 +145,13 @@ export default function Editoras() {
   const handleCloseAdd = () => {
     setOpenModalIniAdd(false);
   };
+
+  React.useEffect(() => {
+    api.get("/editoras").then((res) => {
+      setEditoras(res.data);
+      console.log(res.data);
+    });
+  }, [reload]);
 
   return (
     <div>
@@ -134,20 +164,20 @@ export default function Editoras() {
             <TableRow>
               <StyledTableCell align="left">Nome da Editora</StyledTableCell>
               <StyledTableCell align="right">
-                <Button style={{ color: "white" }}>
+                <Button style={{ color: "white" }} onClick={handleOpenAdd}>
                   <AddIcon />
                 </Button>
               </StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
-              <StyledTableRow key={row.editora}>
+            {editoras.map((row) => (
+              <StyledTableRow key={row.idEditora}>
                 <StyledTableCell component="th" scope="row">
-                  {row.editora}
+                  {row.nome}
                 </StyledTableCell>
                 <StyledTableCell align="right">
-                  <Button onClick={handleOpen}>
+                  <Button onClick={() => handleOpen(row.idEditora)}>
                     <CloseIcon />
                   </Button>
                 </StyledTableCell>
@@ -186,7 +216,7 @@ export default function Editoras() {
               >
                 Cancelar
               </Button>
-              <Button className={classes.botaoIniciar} onClick={handleClose}>
+              <Button className={classes.botaoIniciar} onClick={handleCloseDEL}>
                 Confirmar
               </Button>
             </Grid>
@@ -214,12 +244,14 @@ export default function Editoras() {
               Adicionar nova editora
             </Typography>
 
-            <form className={classes.form}>
+            <form className={classes.form} onSubmit={(e) => submit(e)}>
               <input
                 className={classes.input}
                 type="text"
-                name="name"
+                id="nome"
+                value={data.nome}
                 placeholder="Nome"
+                onChange={(e) => handleForm(e)}
               />
             </form>
 
@@ -237,7 +269,7 @@ export default function Editoras() {
               >
                 Cancelar
               </Button>
-              <Button className={classes.botaoIniciar} onClick={handleCloseAdd}>
+              <Button className={classes.botaoIniciar} onClick={submit}>
                 Confirmar
               </Button>
             </Grid>

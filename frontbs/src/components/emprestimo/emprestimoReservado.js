@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import SearchIcon from "@material-ui/icons/Search";
 import {
@@ -20,6 +20,7 @@ import {
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import { Link } from "react-router-dom";
+import api from "../requisicoes/axios";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -38,14 +39,6 @@ const StyledTableRow = withStyles((theme) => ({
     },
   },
 }))(TableRow);
-
-function createData(cliente, titulo, valor, dataInicial, dataFinal) {
-  return { cliente, titulo, valor, dataInicial, dataFinal };
-}
-
-const rows = [
-  createData("Yasmin Guedes", "Percy Jackson", 50, "09/06/2021", "12/06/2021"),
-];
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -104,15 +97,27 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Emprestimos() {
   const classes = useStyles();
+  const [reload, setReload] = useState(true);
+  const [idEmprestimoSubmit, setIdEmprestimoSubmit] = useState(0);
 
-  const [openModalIni, setOpenModalIni] = React.useState(false);
+  const [openModalIni, setOpenModalIni] = useState(false);
+  const [reservados, setReservados] = useState([]);
 
-  const handleOpen = () => {
+  const handleOpen = (id) => {
     setOpenModalIni(true);
+    setIdEmprestimoSubmit(id);
+    console.log(idEmprestimoSubmit);
   };
 
   const handleClose = () => {
+    console.log(idEmprestimoSubmit);
     setOpenModalIni(false);
+  };
+
+  const handleCloseSubmit = () => {
+    api.put("/iniciar/", idEmprestimoSubmit);
+    setOpenModalIni(false);
+    setReload(!reload);
   };
 
   const dataAtual = new Date();
@@ -124,6 +129,13 @@ export default function Emprestimos() {
     ("0" + (dataAtual.getMonth() + 1)).slice(-2) +
     "-" +
     ("0" + dataAtual.getDate()).slice(-2);
+
+  useEffect(() => {
+    api.get("/emprestimos").then((res) => {
+      setReservados(res.data);
+      console.log(res.data);
+    });
+  }, [reload]);
 
   return (
     <div>
@@ -181,6 +193,7 @@ export default function Emprestimos() {
               <StyledTableCell align="right">Valor</StyledTableCell>
               <StyledTableCell align="right">Data Inicial</StyledTableCell>
               <StyledTableCell align="right">Data Final</StyledTableCell>
+              <StyledTableCell align="center">Status</StyledTableCell>
               <StyledTableCell align="center">
                 <Link
                   to="/formularioEmprestimo"
@@ -194,21 +207,38 @@ export default function Emprestimos() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
-              <StyledTableRow key={row.cliente}>
+            {reservados.map((row) => (
+              <StyledTableRow key={row.idEmprestimo}>
                 <StyledTableCell component="th" scope="row">
-                  {row.cliente}
+                  {row.nomeCliente}
                 </StyledTableCell>
-                <StyledTableCell align="right">{row.titulo}</StyledTableCell>
                 <StyledTableCell align="right">
-                  R${row.valor},00
+                  {row.exemplar.livro.titulo}
+                </StyledTableCell>
+                <StyledTableCell align="right">
+                  R${row.valorTotal},00
                 </StyledTableCell>
                 <StyledTableCell align="right">
                   {row.dataInicial}
                 </StyledTableCell>
                 <StyledTableCell align="right">{row.dataFinal}</StyledTableCell>
+                <StyledTableCell align="center">{row.status}</StyledTableCell>
                 <StyledTableCell align="center">
-                  <Button variant="outlined" onClick={handleOpen}>
+                  <Button
+                    variant="outlined"
+                    onClick={() =>
+                      handleOpen(
+                        row.idEmprestimo,
+                        row.dataInicial,
+                        row.dataFinal,
+                        row.dataEntregue,
+                        row.valorTotal,
+                        row.status,
+                        row.cliente,
+                        row.exemplar
+                      )
+                    }
+                  >
                     Iniciar
                   </Button>
                 </StyledTableCell>
@@ -247,7 +277,10 @@ export default function Emprestimos() {
               >
                 Cancelar
               </Button>
-              <Button className={classes.botaoIniciar} onClick={handleClose}>
+              <Button
+                className={classes.botaoIniciar}
+                onClick={handleCloseSubmit}
+              >
                 Confirmar
               </Button>
             </Grid>

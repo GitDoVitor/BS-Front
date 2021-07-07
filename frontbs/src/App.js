@@ -16,6 +16,7 @@ import Autores from "./components/autor/autor";
 import Editoras from "./components/editora/editora";
 import Generos from "./components/genero/genero";
 import Livros from "./components/livro/livro";
+import Exemplares from "./components/livro/exemplar";
 
 export default class App extends Component {
   componentDidMount() {
@@ -65,6 +66,9 @@ export default class App extends Component {
           </Route>
           <Route path="/generos">
             <Generos />
+          </Route>
+          <Route path="/gerenciaExemplares">
+            <Exemplares />
           </Route>
           <Route component={NTF} />
         </Switch>
