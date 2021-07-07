@@ -17,6 +17,7 @@ import {
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import CloseIcon from "@material-ui/icons/Close";
+import api from "../requisicoes/axios";
 
 const useStyles = makeStyles((theme) => ({
   tableContainer: {
@@ -33,11 +34,11 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "26px",
     color: "#143362",
     fontFamily: "Tauri, sans-serif",
-  },  
+  },
   modal: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   paper: {
     backgroundColor: theme.palette.background.paper,
@@ -70,12 +71,11 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#F3F3F3",
     border: "1px solid #C1C1C1",
     padding: "8px",
-    marginRight:"7px",
+    marginRight: "7px",
     marginBottom: "8px",
     marginTop: "10px",
-    width: "100%"
+    width: "100%",
   },
-  
 }));
 
 const StyledTableCell = withStyles((theme) => ({
@@ -96,19 +96,34 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-function createData(genero) {
-  return { genero };
-}
-
-const rows = [createData("Comédia")];
-
 export default function Generos() {
   const classes = useStyles();
-
+  const [generos, setGeneros] = React.useState([]);
   const [openModalIni, setOpenModalIni] = React.useState(false);
   const [openModalIniAdd, setOpenModalIniAdd] = React.useState(false);
+  const [reload, setReload] = React.useState(true);
+  const [idGenero, setIdGenero] = React.useState(0);
 
-  const handleOpen = () => {
+  const [data, setData] = React.useState({
+    nome: "",
+  });
+
+  function submit(e) {
+    api.post("generos", {
+      nome: data.nome,
+    });
+    setOpenModalIniAdd(false);
+    setReload(!reload);
+  }
+
+  function handleForm(e) {
+    const newData = { ...data };
+    newData[e.target.id] = e.target.value;
+    setData(newData);
+  }
+
+  const handleOpen = (id) => {
+    setIdGenero(id);
     setOpenModalIni(true);
   };
 
@@ -123,6 +138,19 @@ export default function Generos() {
   const handleCloseAdd = () => {
     setOpenModalIniAdd(false);
   };
+
+  const handleCloseDEL = () => {
+    api.delete(`generos/${idGenero}`);
+    setOpenModalIni(false);
+    setReload(!reload);
+  };
+
+  React.useEffect(() => {
+    api.get("/generos").then((res) => {
+      setGeneros(res.data);
+      console.log(res.data);
+    });
+  }, [reload]);
 
   return (
     <div>
@@ -142,13 +170,13 @@ export default function Generos() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
+            {generos.map((row) => (
               <StyledTableRow key={row.genero}>
                 <StyledTableCell component="th" scope="row">
-                  {row.genero}
+                  {row.nome}
                 </StyledTableCell>
                 <StyledTableCell align="right">
-                  <Button onClick={handleOpen}>
+                  <Button onClick={() => handleOpen(row.idGenero)}>
                     <CloseIcon />
                   </Button>
                 </StyledTableCell>
@@ -187,7 +215,7 @@ export default function Generos() {
               >
                 Cancelar
               </Button>
-              <Button className={classes.botaoIniciar} onClick={handleClose}>
+              <Button className={classes.botaoIniciar} onClick={handleCloseDEL}>
                 Confirmar
               </Button>
             </Grid>
@@ -207,12 +235,23 @@ export default function Generos() {
       >
         <Fade in={openModalIniAdd}>
           <div className={classes.paper}>
-            <Typography component="h1" variant="h3" className={classes.tituloModal}>
+            <Typography
+              component="h1"
+              variant="h3"
+              className={classes.tituloModal}
+            >
               Adicionar novo gênero
             </Typography>
 
-            <form className={classes.form}>
-            <input className={classes.input} type="text" name="name" placeholder="Nome"/>
+            <form className={classes.form} onSubmit={(e) => submit(e)}>
+              <input
+                className={classes.input}
+                type="text"
+                id="nome"
+                value={data.nome}
+                onChange={(e) => handleForm(e)}
+                placeholder="Nome"
+              />
             </form>
 
             <Grid
@@ -229,7 +268,7 @@ export default function Generos() {
               >
                 Cancelar
               </Button>
-              <Button className={classes.botaoIniciar} onClick={handleCloseAdd}>
+              <Button className={classes.botaoIniciar} onClick={submit}>
                 Confirmar
               </Button>
             </Grid>

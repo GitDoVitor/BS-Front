@@ -117,7 +117,7 @@ export default function Emprestimos() {
   const handleCloseSubmit = () => {
     api.put("/iniciar/", idEmprestimoSubmit);
     setOpenModalIni(false);
-    setReload(false);
+    setReload(!reload);
   };
 
   const dataAtual = new Date();
@@ -226,12 +226,18 @@ export default function Emprestimos() {
                 <StyledTableCell align="center">
                   <Button
                     variant="outlined"
-                    onClick={() => handleOpen(
-                      row.idEmprestimo,
-                      row.titulo,
-                      row.valorTotal,
-                      row.
-                      )}
+                    onClick={() =>
+                      handleOpen(
+                        row.idEmprestimo,
+                        row.dataInicial,
+                        row.dataFinal,
+                        row.dataEntregue,
+                        row.valorTotal,
+                        row.status,
+                        row.cliente,
+                        row.exemplar
+                      )
+                    }
                   >
                     Iniciar
                   </Button>
