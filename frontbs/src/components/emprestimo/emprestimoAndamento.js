@@ -18,6 +18,7 @@ import {
   Typography,
   withStyles,
 } from "@material-ui/core";
+import api from "../requisicoes/axios";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -36,14 +37,6 @@ const StyledTableRow = withStyles((theme) => ({
     },
   },
 }))(TableRow);
-
-function createData(cliente, titulo, valor, dataInicial, dataFinal) {
-  return { cliente, titulo, valor, dataInicial, dataFinal };
-}
-
-const rows = [
-  createData("Yasmin Guedes", "Percy Jackson", 50, "09/06/2021", "12/06/2021"),
-];
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -102,17 +95,34 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Emprestimos() {
   const classes = useStyles();
-
+  const [reload, setReload] = React.useState(true);
   const [openModalFinaliza, setOpenModalFinaliza] = React.useState(false);
   const [openModalCancela, setOpenModalCancela] = React.useState(false);
   const [openModalRenova, setOpenModalRenova] = React.useState(false);
+  const [andamentos, setAndamentos] = React.useState([]);
+  const [idEmprestimo, setIdEmprestimo] = React.useState(0);
 
-  const handleOpenFinaliza = () => {
+  React.useEffect(() => {
+    api.get("/emprestimos/andamento").then((res) => {
+      setAndamentos(res.data);
+      console.log(res.data);
+    });
+  }, [reload]);
+
+  const handleOpenFinaliza = (id) => {
+    setIdEmprestimo(id);
     setOpenModalFinaliza(true);
   };
 
   const handleCloseFinaliza = () => {
     setOpenModalFinaliza(false);
+  };
+
+  const handleCloseFinalizaSubmit = () => {
+    api.put(`emprestimos/finaliza/${idEmprestimo}`);
+    alert("Empréstimo Finalizado");
+    setOpenModalFinaliza(false);
+    setReload(!reload);
   };
 
   const handleOpenCancela = () => {
@@ -201,14 +211,16 @@ export default function Emprestimos() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
-              <StyledTableRow key={row.cliente}>
+            {andamentos.map((row) => (
+              <StyledTableRow key={row.idCliente}>
                 <StyledTableCell component="th" scope="row">
-                  {row.cliente}
+                  {row.nomeCliente}
                 </StyledTableCell>
-                <StyledTableCell align="right">{row.titulo}</StyledTableCell>
                 <StyledTableCell align="right">
-                  R${row.valor},00
+                  {row.exemplar.livro.titulo}
+                </StyledTableCell>
+                <StyledTableCell align="right">
+                  R${row.valorTotal},00
                 </StyledTableCell>
                 <StyledTableCell align="right">
                   {row.dataInicial}
@@ -221,7 +233,10 @@ export default function Emprestimos() {
                     justify="space-around"
                     alignItems="center"
                   >
-                    <Button variant="outlined" onClick={handleOpenFinaliza}>
+                    <Button
+                      variant="outlined"
+                      onClick={handleOpenFinaliza(row.idEmprestimo)}
+                    >
                       Finalizar
                     </Button>
                     <Button variant="outlined" onClick={handleOpenCancela}>
@@ -269,7 +284,7 @@ export default function Emprestimos() {
               </Button>
               <Button
                 className={classes.botaoIniciar}
-                onClick={handleCloseFinaliza}
+                onClick={handleCloseFinalizaSubmit}
               >
                 Confirmar
               </Button>
