@@ -18,8 +18,6 @@ import {
   Typography,
   withStyles,
 } from "@material-ui/core";
-import AddIcon from "@material-ui/icons/Add";
-import { Link } from "react-router-dom";
 import api from "../requisicoes/axios";
 
 const StyledTableCell = withStyles((theme) => ({
@@ -102,6 +100,30 @@ export default function Emprestimos() {
 
   const [openModalIni, setOpenModalIni] = useState(false);
   const [reservados, setReservados] = useState([]);
+  const [searchTerm, setSearchTerm] = React.useState("");
+
+  const handleChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const results = !searchTerm
+    ? reservados
+    : reservados.filter((reserva) =>
+        reserva.toLowerCase().includes(searchTerm.toLocaleLowerCase())
+      );
+
+  const [data, setData] = React.useState("");
+
+  function submit(e) {
+    api.post(`emprestimos/livro/${data}`);
+    setOpenModalIni(false);
+    setReload(!reload);
+  }
+
+  function handleForm(e) {
+    console.log(e.target.value);
+    setData(e.target.value);
+  }
 
   const handleOpen = (id) => {
     setOpenModalIni(true);
@@ -115,7 +137,8 @@ export default function Emprestimos() {
   };
 
   const handleCloseSubmit = () => {
-    api.put("/iniciar/", idEmprestimoSubmit);
+    api.put(`/emprestimos/iniciar/${idEmprestimoSubmit}`);
+    alert("Empréstimo Iniciado");
     setOpenModalIni(false);
     setReload(!reload);
   };
@@ -131,7 +154,7 @@ export default function Emprestimos() {
     ("0" + dataAtual.getDate()).slice(-2);
 
   useEffect(() => {
-    api.get("/emprestimos").then((res) => {
+    api.get("/emprestimos/reservados").then((res) => {
       setReservados(res.data);
       console.log(res.data);
     });
@@ -150,14 +173,18 @@ export default function Emprestimos() {
           alignItems="center"
         >
           <TextField
+            onSubmit={(e) => submit(e)}
             className={classes.barraPesquisa}
             label="Pesquisar"
             InputProps={{
+              value: searchTerm,
+              onChange: handleChange,
               startAdornment: (
                 <InputAdornment position="start">
                   <SearchIcon />
                 </InputAdornment>
               ),
+              placeholder: "Nome do Livro",
             }}
           />
           <form className={classes.container} noValidate>
@@ -193,21 +220,11 @@ export default function Emprestimos() {
               <StyledTableCell align="right">Valor</StyledTableCell>
               <StyledTableCell align="right">Data Inicial</StyledTableCell>
               <StyledTableCell align="right">Data Final</StyledTableCell>
-              <StyledTableCell align="center">Status</StyledTableCell>
-              <StyledTableCell align="center">
-                <Link
-                  to="/formularioEmprestimo"
-                  style={{ textDecoration: "none" }}
-                >
-                  <Button>
-                    <AddIcon />
-                  </Button>
-                </Link>
-              </StyledTableCell>
+              <StyledTableCell align="right"></StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {reservados.map((row) => (
+            {results.map((row) => (
               <StyledTableRow key={row.idEmprestimo}>
                 <StyledTableCell component="th" scope="row">
                   {row.nomeCliente}
@@ -222,22 +239,10 @@ export default function Emprestimos() {
                   {row.dataInicial}
                 </StyledTableCell>
                 <StyledTableCell align="right">{row.dataFinal}</StyledTableCell>
-                <StyledTableCell align="center">{row.status}</StyledTableCell>
                 <StyledTableCell align="center">
                   <Button
                     variant="outlined"
-                    onClick={() =>
-                      handleOpen(
-                        row.idEmprestimo,
-                        row.dataInicial,
-                        row.dataFinal,
-                        row.dataEntregue,
-                        row.valorTotal,
-                        row.status,
-                        row.cliente,
-                        row.exemplar
-                      )
-                    }
+                    onClick={() => handleOpen(row.idEmprestimo)}
                   >
                     Iniciar
                   </Button>

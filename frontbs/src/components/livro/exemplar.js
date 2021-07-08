@@ -21,6 +21,7 @@ import AddIcon from "@material-ui/icons/Add";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import { Link } from "react-router-dom";
 import SearchIcon from "@material-ui/icons/Search";
+import api from "../requisicoes/axios";
 
 const useStyles = makeStyles((theme) => ({
   tableContainer: {
@@ -85,50 +86,16 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-function createData(
-  titulo,
-  editora,
-  genero,
-  autor,
-  preco,
-  edicao,
-  idioma,
-  dataPub,
-  ISBN
-) {
-  return {
-    titulo,
-    editora,
-    genero,
-    autor,
-    preco,
-    edicao,
-    idioma,
-    dataPub,
-    ISBN,
-  };
-}
-
-const rows = [
-  createData(
-    "Magnus Chase e os Deuses de Asgard - O Navio dos Mortos",
-    "Intríseca",
-    "Aventura",
-    "Rick Riordan",
-    20,
-    1,
-    "PT-BR",
-    "03/10/2017",
-    9788551002476
-  ),
-];
-
 export default function Exemplares() {
   const classes = useStyles();
 
   const [openModalIni, setOpenModalIni] = React.useState(false);
+  const [exemplares, setExemplares] = React.useState([]);
+  const [reload, setReload] = React.useState(true);
+  const [idExemplar, setIdExemplar] = React.useState(0);
 
-  const handleOpen = () => {
+  const handleOpen = (id) => {
+    setIdExemplar(id);
     setOpenModalIni(true);
   };
 
@@ -136,11 +103,24 @@ export default function Exemplares() {
     setOpenModalIni(false);
   };
 
+  const handleCloseSubmit = () => {
+    api.delete(`exemplares/${idExemplar}`);
+    setOpenModalIni(false);
+    setReload(!reload);
+  };
+
+  React.useEffect(() => {
+    api.get("/exemplares").then((res) => {
+      setExemplares(res.data);
+      console.log(res.data);
+    });
+  }, [reload]);
+
   return (
     <div>
       <TableContainer className={classes.tableContainer}>
         <Typography component="h1" variant="h3" className={classes.titulo}>
-          LIVROS
+          EXEMPLARES
         </Typography>
         <TextField
           className={classes.barraPesquisa}
@@ -156,17 +136,9 @@ export default function Exemplares() {
         <Table className={classes.table} aria-label="customized table">
           <TableHead>
             <TableRow>
-              <StyledTableCell align="left">Livro</StyledTableCell>
-              <StyledTableCell align="right">Editora</StyledTableCell>
-              <StyledTableCell align="right">Gênero</StyledTableCell>
-              <StyledTableCell align="right">Autor</StyledTableCell>
-              <StyledTableCell align="right">Preço</StyledTableCell>
-              <StyledTableCell align="right">Edição</StyledTableCell>
-              <StyledTableCell align="right">Idioma</StyledTableCell>
-              <StyledTableCell align="right">
-                Data de Publicação
-              </StyledTableCell>
+              <StyledTableCell align="left">Exemplar</StyledTableCell>
               <StyledTableCell align="right">ISBN</StyledTableCell>
+              <StyledTableCell align="right">Status</StyledTableCell>
               <StyledTableCell align="center">
                 <Link style={{ color: "white" }} to="/formulario">
                   <AddIcon />
@@ -175,37 +147,19 @@ export default function Exemplares() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
+            {exemplares.map((row) => (
               <StyledTableRow key={row.autor}>
-                <StyledTableCell component="th" scope="row">
-                  {row.titulo}
+                <StyledTableCell component="th" scope="row" align="left">
+                  {row.livro.titulo}
                 </StyledTableCell>
-                <StyledTableCell component="th" scope="row">
-                  {row.editora}
+                <StyledTableCell component="th" scope="row" align="right">
+                  {row.isbn}
                 </StyledTableCell>
-                <StyledTableCell component="th" scope="row">
-                  {row.genero}
+                <StyledTableCell component="th" scope="row" align="right">
+                  {row.status}
                 </StyledTableCell>
-                <StyledTableCell component="th" scope="row">
-                  {row.autor}
-                </StyledTableCell>
-                <StyledTableCell component="th" scope="row">
-                  R${row.preco},00
-                </StyledTableCell>
-                <StyledTableCell component="th" scope="row">
-                  {row.edicao}ª
-                </StyledTableCell>{" "}
-                <StyledTableCell component="th" scope="row">
-                  {row.idioma}
-                </StyledTableCell>
-                <StyledTableCell component="th" scope="row">
-                  {row.dataPub}
-                </StyledTableCell>
-                <StyledTableCell component="th" scope="row">
-                  {row.ISBN}
-                </StyledTableCell>
-                <StyledTableCell align="right">
-                  <Button onClick={handleOpen}>
+                <StyledTableCell align="center">
+                  <Button onClick={() => handleOpen(row.idExemplar)}>
                     <MoreHorizIcon />
                   </Button>
                 </StyledTableCell>
@@ -244,7 +198,10 @@ export default function Exemplares() {
               >
                 Cancelar
               </Button>
-              <Button className={classes.botaoIniciar} onClick={handleClose}>
+              <Button
+                className={classes.botaoIniciar}
+                onClick={handleCloseSubmit}
+              >
                 Excluir
               </Button>
               <Button onClick={handleClose} className={classes.botaoIniciar}>

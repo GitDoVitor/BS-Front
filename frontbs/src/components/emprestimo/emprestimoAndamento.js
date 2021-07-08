@@ -18,6 +18,7 @@ import {
   Typography,
   withStyles,
 } from "@material-ui/core";
+import api from "../requisicoes/axios";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -36,14 +37,6 @@ const StyledTableRow = withStyles((theme) => ({
     },
   },
 }))(TableRow);
-
-function createData(cliente, titulo, valor, dataInicial, dataFinal) {
-  return { cliente, titulo, valor, dataInicial, dataFinal };
-}
-
-const rows = [
-  createData("Yasmin Guedes", "Percy Jackson", 50, "09/06/2021", "12/06/2021"),
-];
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -102,12 +95,24 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Emprestimos() {
   const classes = useStyles();
-
+  const [reload, setReload] = React.useState(true);
   const [openModalFinaliza, setOpenModalFinaliza] = React.useState(false);
   const [openModalCancela, setOpenModalCancela] = React.useState(false);
   const [openModalRenova, setOpenModalRenova] = React.useState(false);
+  const [andamentos, setAndamentos] = React.useState([]);
+  const [idEmprestimoFinaliza, setIdEmprestimoFinaliza] = React.useState(0);
+  const [idEmprestimoCancela, setIdEmprestimoCancela] = React.useState(0);
+  const [idEmprestimoRenova, setIdEmprestimoRenova] = React.useState(0);
 
-  const handleOpenFinaliza = () => {
+  React.useEffect(() => {
+    api.get("/emprestimos/andamento").then((res) => {
+      setAndamentos(res.data);
+      console.log(res.data);
+    });
+  }, [reload]);
+
+  const handleOpenFinaliza = (id) => {
+    setIdEmprestimoFinaliza(id);
     setOpenModalFinaliza(true);
   };
 
@@ -115,11 +120,25 @@ export default function Emprestimos() {
     setOpenModalFinaliza(false);
   };
 
-  const handleOpenCancela = () => {
+  const handleCloseFinalizaSubmit = () => {
+    api.put(`emprestimos/finaliza/${idEmprestimoFinaliza}`);
+    alert("Empréstimo Finalizado");
+    setOpenModalFinaliza(false);
+    setReload(!reload);
+  };
+
+  const handleOpenCancela = (id) => {
+    setIdEmprestimoCancela(id);
     setOpenModalCancela(true);
   };
 
   const handleCloseCancela = () => {
+    setOpenModalCancela(false);
+  };
+
+  const handleCloseCancelaSubmit = () => {
+    api.put(`emprestimos/cancelar/${idEmprestimoCancela}`);
+    alert("Empréstimo Cancelado");
     setOpenModalCancela(false);
   };
 
@@ -201,14 +220,16 @@ export default function Emprestimos() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
-              <StyledTableRow key={row.cliente}>
+            {andamentos.map((row) => (
+              <StyledTableRow key={row.idCliente}>
                 <StyledTableCell component="th" scope="row">
-                  {row.cliente}
+                  {row.nomeCliente}
                 </StyledTableCell>
-                <StyledTableCell align="right">{row.titulo}</StyledTableCell>
                 <StyledTableCell align="right">
-                  R${row.valor},00
+                  {row.exemplar.livro.titulo}
+                </StyledTableCell>
+                <StyledTableCell align="right">
+                  R${row.valorTotal},00
                 </StyledTableCell>
                 <StyledTableCell align="right">
                   {row.dataInicial}
@@ -221,13 +242,22 @@ export default function Emprestimos() {
                     justify="space-around"
                     alignItems="center"
                   >
-                    <Button variant="outlined" onClick={handleOpenFinaliza}>
+                    <Button
+                      variant="outlined"
+                      onClick={() => handleOpenFinaliza(row.idEmprestimo)}
+                    >
                       Finalizar
                     </Button>
-                    <Button variant="outlined" onClick={handleOpenCancela}>
+                    <Button
+                      variant="outlined"
+                      onClick={() => handleOpenCancela(row.idEmprestimo)}
+                    >
                       Cancelar
                     </Button>
-                    <Button variant="outlined" onClick={handleOpenRenova}>
+                    <Button
+                      variant="outlined"
+                      onClick={() => handleOpenRenova(row.idEmprestimo)}
+                    >
                       Renovar
                     </Button>
                   </Grid>
@@ -269,7 +299,7 @@ export default function Emprestimos() {
               </Button>
               <Button
                 className={classes.botaoIniciar}
-                onClick={handleCloseFinaliza}
+                onClick={handleCloseFinalizaSubmit}
               >
                 Confirmar
               </Button>
@@ -309,7 +339,7 @@ export default function Emprestimos() {
               </Button>
               <Button
                 className={classes.botaoIniciar}
-                onClick={handleCloseCancela}
+                onClick={handleCloseCancelaSubmit}
               >
                 Confirmar
               </Button>

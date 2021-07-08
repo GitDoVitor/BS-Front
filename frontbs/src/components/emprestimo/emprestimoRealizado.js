@@ -14,6 +14,7 @@ import {
   Typography,
   withStyles,
 } from "@material-ui/core";
+import api from "../requisicoes/axios";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -32,14 +33,6 @@ const StyledTableRow = withStyles((theme) => ({
     },
   },
 }))(TableRow);
-
-function createData(cliente, titulo, valor, dataInicial, dataFinal) {
-  return { cliente, titulo, valor, dataInicial, dataFinal };
-}
-
-const rows = [
-  createData("Yasmin Guedes", "Percy Jackson", 50, "09/06/2021", "12/06/2021"),
-];
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -72,6 +65,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Emprestimos() {
   const classes = useStyles();
+  const [realizados, setRealizados] = React.useState([]);
+  const [reload, setReload] = React.useState(true);
 
   const dataAtual = new Date();
   var MyDateString = 0;
@@ -82,6 +77,13 @@ export default function Emprestimos() {
     ("0" + (dataAtual.getMonth() + 1)).slice(-2) +
     "-" +
     ("0" + dataAtual.getDate()).slice(-2);
+
+  React.useEffect(() => {
+    api.get("/emprestimos/realizados").then((res) => {
+      setRealizados(res.data);
+      console.log(res.data);
+    });
+  }, [reload]);
 
   return (
     <div>
@@ -142,14 +144,16 @@ export default function Emprestimos() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
+            {realizados.map((row) => (
               <StyledTableRow key={row.cliente}>
                 <StyledTableCell component="th" scope="row">
-                  {row.cliente}
+                  {row.nomeCliente}
                 </StyledTableCell>
-                <StyledTableCell align="right">{row.titulo}</StyledTableCell>
                 <StyledTableCell align="right">
-                  R${row.valor},00
+                  {row.exemplar.livro.titulo}
+                </StyledTableCell>
+                <StyledTableCell align="right">
+                  R${row.valorTotal},00
                 </StyledTableCell>
                 <StyledTableCell align="right">
                   {row.dataInicial}

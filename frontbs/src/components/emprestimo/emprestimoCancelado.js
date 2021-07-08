@@ -13,6 +13,7 @@ import {
   Typography,
   withStyles,
 } from "@material-ui/core";
+import api from "../requisicoes/axios";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -31,28 +32,6 @@ const StyledTableRow = withStyles((theme) => ({
     },
   },
 }))(TableRow);
-
-function createData(
-  cliente,
-  titulo,
-  valor,
-  dataInicial,
-  dataFinal,
-  dataCancelamento
-) {
-  return { cliente, titulo, valor, dataInicial, dataFinal, dataCancelamento };
-}
-
-const rows = [
-  createData(
-    "Yasmin Guedes",
-    "Percy Jackson",
-    50,
-    "09/06/2021",
-    "12/06/2021",
-    "12/06/2021"
-  ),
-];
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -80,12 +59,22 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Emprestimos() {
   const classes = useStyles();
+  const [reload, setReload] = React.useState(true);
+
+  const [cancelados, setCancelados] = React.useState([]);
+
+  React.useEffect(() => {
+    api.get("/emprestimos/cancelados").then((res) => {
+      setCancelados(res.data);
+      console.log(res.data);
+    });
+  }, [reload]);
 
   return (
     <div>
       <TableContainer className={classes.tableContainer}>
         <Typography component="h1" variant="h3" className={classes.titulo}>
-          EMPRÉSTIMOS EM ANDAMENTO
+          EMPRÉSTIMOS CANCELADOS
         </Typography>
         <TextField
           className={classes.barraPesquisa}
@@ -116,28 +105,24 @@ export default function Emprestimos() {
               <StyledTableCell align="right" className={classes.tituloTabela}>
                 Data Final
               </StyledTableCell>
-              <StyledTableCell align="right" className={classes.tituloTabela}>
-                Data de Cancelamento
-              </StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
-              <StyledTableRow key={row.cliente}>
+            {cancelados.map((row) => (
+              <StyledTableRow key={row.idCliente}>
                 <StyledTableCell component="th" scope="row">
-                  {row.cliente}
+                  {row.nomeCliente}
                 </StyledTableCell>
-                <StyledTableCell align="right">{row.titulo}</StyledTableCell>
                 <StyledTableCell align="right">
-                  R${row.valor},00
+                  {row.exemplar.livro.titulo}
+                </StyledTableCell>
+                <StyledTableCell align="right">
+                  R${row.valorTotal},00
                 </StyledTableCell>
                 <StyledTableCell align="right">
                   {row.dataInicial}
                 </StyledTableCell>
                 <StyledTableCell align="right">{row.dataFinal}</StyledTableCell>
-                <StyledTableCell align="right">
-                  {row.dataCancelamento}
-                </StyledTableCell>
               </StyledTableRow>
             ))}
           </TableBody>
