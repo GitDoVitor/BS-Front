@@ -100,7 +100,9 @@ export default function Emprestimos() {
   const [openModalCancela, setOpenModalCancela] = React.useState(false);
   const [openModalRenova, setOpenModalRenova] = React.useState(false);
   const [andamentos, setAndamentos] = React.useState([]);
-  const [idEmprestimo, setIdEmprestimo] = React.useState(0);
+  const [idEmprestimoFinaliza, setIdEmprestimoFinaliza] = React.useState(0);
+  const [idEmprestimoCancela, setIdEmprestimoCancela] = React.useState(0);
+  const [idEmprestimoRenova, setIdEmprestimoRenova] = React.useState(0);
 
   React.useEffect(() => {
     api.get("/emprestimos/andamento").then((res) => {
@@ -110,7 +112,7 @@ export default function Emprestimos() {
   }, [reload]);
 
   const handleOpenFinaliza = (id) => {
-    setIdEmprestimo(id);
+    setIdEmprestimoFinaliza(id);
     setOpenModalFinaliza(true);
   };
 
@@ -119,17 +121,24 @@ export default function Emprestimos() {
   };
 
   const handleCloseFinalizaSubmit = () => {
-    api.put(`emprestimos/finaliza/${idEmprestimo}`);
+    api.put(`emprestimos/finaliza/${idEmprestimoFinaliza}`);
     alert("Empréstimo Finalizado");
     setOpenModalFinaliza(false);
     setReload(!reload);
   };
 
-  const handleOpenCancela = () => {
+  const handleOpenCancela = (id) => {
+    setIdEmprestimoCancela(id);
     setOpenModalCancela(true);
   };
 
   const handleCloseCancela = () => {
+    setOpenModalCancela(false);
+  };
+
+  const handleCloseCancelaSubmit = () => {
+    api.put(`emprestimos/cancelar/${idEmprestimoCancela}`);
+    alert("Empréstimo Cancelado");
     setOpenModalCancela(false);
   };
 
@@ -235,14 +244,20 @@ export default function Emprestimos() {
                   >
                     <Button
                       variant="outlined"
-                      onClick={handleOpenFinaliza(row.idEmprestimo)}
+                      onClick={() => handleOpenFinaliza(row.idEmprestimo)}
                     >
                       Finalizar
                     </Button>
-                    <Button variant="outlined" onClick={handleOpenCancela}>
+                    <Button
+                      variant="outlined"
+                      onClick={() => handleOpenCancela(row.idEmprestimo)}
+                    >
                       Cancelar
                     </Button>
-                    <Button variant="outlined" onClick={handleOpenRenova}>
+                    <Button
+                      variant="outlined"
+                      onClick={() => handleOpenRenova(row.idEmprestimo)}
+                    >
                       Renovar
                     </Button>
                   </Grid>
@@ -324,7 +339,7 @@ export default function Emprestimos() {
               </Button>
               <Button
                 className={classes.botaoIniciar}
-                onClick={handleCloseCancela}
+                onClick={handleCloseCancelaSubmit}
               >
                 Confirmar
               </Button>

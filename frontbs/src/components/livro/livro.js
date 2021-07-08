@@ -21,6 +21,7 @@ import AddIcon from "@material-ui/icons/Add";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import { Link } from "react-router-dom";
 import SearchIcon from "@material-ui/icons/Search";
+import api from "../requisicoes/axios";
 
 const useStyles = makeStyles((theme) => ({
   tableContainer: {
@@ -85,56 +86,35 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-function createData(
-  titulo,
-  editora,
-  genero,
-  autor,
-  preco,
-  edicao,
-  idioma,
-  dataPub,
-  ISBN
-) {
-  return {
-    titulo,
-    editora,
-    genero,
-    autor,
-    preco,
-    edicao,
-    idioma,
-    dataPub,
-    ISBN,
-  };
-}
-
-const rows = [
-  createData(
-    "Magnus Chase e os Deuses de Asgard - O Navio dos Mortos",
-    "Intríseca",
-    "Aventura",
-    "Rick Riordan",
-    20,
-    1,
-    "PT-BR",
-    "03/10/2017",
-    9788551002476
-  ),
-];
-
 export default function Livros() {
   const classes = useStyles();
 
   const [openModalIni, setOpenModalIni] = React.useState(false);
+  const [livros, setLivros] = React.useState([]);
+  const [reload, setReload] = React.useState(true);
+  const [idLivro, setIdLivro] = React.useState(0);
 
-  const handleOpen = () => {
+  const handleOpen = (id) => {
+    setIdLivro(id);
     setOpenModalIni(true);
   };
 
   const handleClose = () => {
     setOpenModalIni(false);
   };
+
+  const handleCloseSubmit = () => {
+    api.delete(`livros/${idLivro}`);
+    setOpenModalIni(false);
+    setReload(!reload);
+  };
+
+  React.useEffect(() => {
+    api.get("/livros").then((res) => {
+      setLivros(res.data);
+      console.log(res.data);
+    });
+  }, [reload]);
 
   return (
     <div>
@@ -157,16 +137,13 @@ export default function Livros() {
           <TableHead>
             <TableRow>
               <StyledTableCell align="left">Livro</StyledTableCell>
-              <StyledTableCell align="right">Editora</StyledTableCell>
-              <StyledTableCell align="right">Gênero</StyledTableCell>
-              <StyledTableCell align="right">Autor</StyledTableCell>
+              <StyledTableCell align="left">Editora</StyledTableCell>
+              <StyledTableCell align="left">Gênero</StyledTableCell>
               <StyledTableCell align="right">Preço</StyledTableCell>
               <StyledTableCell align="right">Edição</StyledTableCell>
-              <StyledTableCell align="right">Idioma</StyledTableCell>
               <StyledTableCell align="right">
                 Data de Publicação
               </StyledTableCell>
-              <StyledTableCell align="right">ISBN</StyledTableCell>
               <StyledTableCell align="center">
                 <Link style={{ color: "white" }} to="/formulario">
                   <AddIcon />
@@ -175,37 +152,28 @@ export default function Livros() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
+            {livros.map((row) => (
               <StyledTableRow key={row.autor}>
                 <StyledTableCell component="th" scope="row">
                   {row.titulo}
                 </StyledTableCell>
                 <StyledTableCell component="th" scope="row">
-                  {row.editora}
+                  {row.editora.nome}
                 </StyledTableCell>
                 <StyledTableCell component="th" scope="row">
-                  {row.genero}
+                  {row.genero.nome}
                 </StyledTableCell>
-                <StyledTableCell component="th" scope="row">
-                  {row.autor}
-                </StyledTableCell>
-                <StyledTableCell component="th" scope="row">
+                <StyledTableCell component="th" scope="row" align="right">
                   R${row.preco},00
                 </StyledTableCell>
-                <StyledTableCell component="th" scope="row">
+                <StyledTableCell component="th" scope="row" align="right">
                   {row.edicao}ª
-                </StyledTableCell>{" "}
-                <StyledTableCell component="th" scope="row">
-                  {row.idioma}
                 </StyledTableCell>
-                <StyledTableCell component="th" scope="row">
-                  {row.dataPub}
+                <StyledTableCell component="th" scope="row" align="right">
+                  {row.dataPublicacao}
                 </StyledTableCell>
-                <StyledTableCell component="th" scope="row">
-                  {row.ISBN}
-                </StyledTableCell>
-                <StyledTableCell align="right">
-                  <Button onClick={handleOpen}>
+                <StyledTableCell align="center">
+                  <Button onClick={() => handleOpen(row.idLivro)}>
                     <MoreHorizIcon />
                   </Button>
                 </StyledTableCell>
@@ -244,7 +212,10 @@ export default function Livros() {
               >
                 Cancelar
               </Button>
-              <Button className={classes.botaoIniciar} onClick={handleClose}>
+              <Button
+                className={classes.botaoIniciar}
+                onClick={handleCloseSubmit}
+              >
                 Excluir
               </Button>
               <Button onClick={handleClose} className={classes.botaoIniciar}>

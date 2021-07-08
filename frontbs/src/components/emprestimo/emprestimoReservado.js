@@ -18,8 +18,6 @@ import {
   Typography,
   withStyles,
 } from "@material-ui/core";
-import AddIcon from "@material-ui/icons/Add";
-import { Link } from "react-router-dom";
 import api from "../requisicoes/axios";
 
 const StyledTableCell = withStyles((theme) => ({
@@ -102,6 +100,17 @@ export default function Emprestimos() {
 
   const [openModalIni, setOpenModalIni] = useState(false);
   const [reservados, setReservados] = useState([]);
+  const [searchTerm, setSearchTerm] = React.useState("");
+
+  const handleChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const results = !searchTerm
+    ? reservados
+    : reservados.filter((reserva) =>
+        reserva.toLowerCase().includes(searchTerm.toLocaleLowerCase())
+      );
 
   const [data, setData] = React.useState("");
 
@@ -168,14 +177,14 @@ export default function Emprestimos() {
             className={classes.barraPesquisa}
             label="Pesquisar"
             InputProps={{
-              // value: { data },
+              value: searchTerm,
+              onChange: handleChange,
               startAdornment: (
                 <InputAdornment position="start">
                   <SearchIcon />
                 </InputAdornment>
               ),
               placeholder: "Nome do Livro",
-              onChange: (e) => handleForm(e),
             }}
           />
           <form className={classes.container} noValidate>
@@ -215,7 +224,7 @@ export default function Emprestimos() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {reservados.map((row) => (
+            {results.map((row) => (
               <StyledTableRow key={row.idEmprestimo}>
                 <StyledTableCell component="th" scope="row">
                   {row.nomeCliente}

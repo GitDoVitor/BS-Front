@@ -117,7 +117,7 @@ export default function Emprestimos() {
                   {row.exemplar.livro.titulo}
                 </StyledTableCell>
                 <StyledTableCell align="right">
-                  R${row.valor},00
+                  R${row.valorTotal},00
                 </StyledTableCell>
                 <StyledTableCell align="right">
                   {row.dataInicial}
